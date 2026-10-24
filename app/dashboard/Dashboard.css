@@ -1,0 +1,688 @@
+/* app/dashboard/Dashboard.css */
+
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  height: 100vh; 
+  background-color: #090E17;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  color: #F8FAFC;
+  overflow: hidden; 
+}
+
+/* ================= TOPBAR ================= */
+.topbar {
+  height: 64px;
+  background: #111827;
+  border-bottom: 1px solid #1F2937;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* HAPUS .logo-placeholder, GANTI DENGAN INI */
+.topbar-logo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain; /* Memastikan logo tidak gepeng */
+  filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.2)); /* Efek glow tipis */
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.brand-text h1 {
+  font-size: 15px; /* Sedikit diperbesar */
+  font-weight: 800; /* Dipertebal */
+  color: #FFFFFF;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.brand-text h1.sec{
+  font-size: 15px; /* Sedikit diperbesar */
+  font-weight: 800; /* Dipertebal */
+  color: #FACC15;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  color: #94A3B8;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.icon-btn:hover {
+  color: #FACC15;
+}
+
+.user-profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  border-left: 1px solid #1F2937;
+  padding-left: 16px;
+}
+
+.user-profile-btn span {
+  font-size: 14px;
+  font-weight: 600;
+  color: #F8FAFC;
+}
+
+/* ================= LAYOUT UTAMA ================= */
+.main-layout {
+  display: flex;
+  flex: 1;
+  position: relative;
+  overflow: hidden; 
+}
+
+/* ================= FLOATING HAMBURGER ================= */
+.floating-hamburger {
+  position: fixed;
+  top: 80px; 
+  z-index: 110;
+  background: #111827;
+  border: 1px solid #1F2937;
+  color: #94A3B8;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: left 0.3s ease, opacity 0.3s ease, background 0.2s, color 0.2s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+}
+
+.floating-hamburger:hover {
+  opacity: 1 !important;
+  color: #FACC15;
+  background-color: #1F2937;
+}
+
+.floating-hamburger.open {
+  left: 270px; 
+  opacity: 0.5;
+}
+
+.floating-hamburger.closed {
+  left: 20px;
+  opacity: 1;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+  width: 256px;
+  background: #111827;
+  border-right: 1px solid #1F2937;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 64px); 
+  overflow: hidden; 
+  transition: margin-left 0.3s ease, transform 0.3s ease;
+  flex-shrink: 0;
+  z-index: 90;
+}
+
+.sidebar.closed {
+  margin-left: -256px; 
+}
+
+/* Search Bar (Sudah diperbaiki tidak terpotong) */
+.sidebar-search {
+  padding: 12px 16px; 
+  border-bottom: 1px solid #1F2937;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.search-wrapper {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.search-wrapper input {
+  width: 100%;
+  background: #090E17;
+  border: 1px solid #374151;
+  border-radius: 6px; 
+  padding: 6px 30px 6px 10px; 
+  font-size: 13px; 
+  color: #F8FAFC;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.search-wrapper input::placeholder {
+  color: #6B7280;
+}
+
+.search-wrapper input:focus {
+  border-color: #FACC15;
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6B7280;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+
+.sidebar-menu {
+  list-style: none;
+  padding: 16px 8px;
+  margin: 0;
+  overflow: hidden; 
+}
+
+.sidebar-menu li {
+  margin-bottom: 4px;
+}
+
+.sidebar-menu a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  text-decoration: none;
+  color: #94A3B8;
+  font-size: 14px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.sidebar-menu a:hover {
+  background-color: #1F2937;
+  color: #FACC15;
+}
+
+.sidebar-menu a.active {
+  background-color: rgba(250, 204, 21, 0.1);
+  color: #FACC15;
+  font-weight: 600;
+  border-left: 4px solid #FACC15;
+  border-radius: 0 8px 8px 0;
+}
+
+/* ================= AREA KONTEN ================= */
+.content-area {
+  flex: 1;
+  overflow-y: auto; 
+  overflow-x: hidden;
+  padding: 24px;
+}
+
+.content-grid {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+/* ================= KARTU-KARTU ================= */
+.card {
+  background: #111827;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  border: 1px solid #1F2937;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.welcome-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-text h1 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #FACC15;
+  margin: 0 0 8px 0;
+}
+
+.welcome-text p {
+  font-size: 14px;
+  color: #94A3B8;
+  max-width: 500px;
+  line-height: 1.6;
+  margin: 0 0 12px 0;
+}
+
+/* ================= JADWAL ACARA (KALENDER) ================= */
+.schedule-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.calendar-box {
+  border: 1px solid #1F2937;
+  border-radius: 12px;
+  padding: 20px;
+  background: #090E17;
+  display: flex;
+  flex-direction: column;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #1F2937;
+  font-weight: 700;
+  font-size: 16px;
+  color: #F8FAFC;
+}
+
+.calendar-header button {
+  background: #1F2937;
+  border: 1px solid #374151;
+  cursor: pointer;
+  color: #94A3B8;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.calendar-header button:hover {
+  background: #FACC15;
+  color: #090E17;
+  border-color: #FACC15;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748B;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.calendar-dates {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  text-align: center;
+}
+
+.calendar-dates span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1 / 1; 
+  max-width: 42px; 
+  margin: 0 auto;
+  font-size: 14px;
+  font-weight: 500;
+  color: #F8FAFC;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.calendar-dates span:hover {
+  background-color: #1F2937;
+  color: #FACC15;
+  transform: scale(1.1);
+}
+
+.calendar-dates span.muted {
+  color: #374151;
+}
+
+.calendar-dates span.active-date {
+  background-color: #FACC15;
+  color: #090E17;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(250, 204, 21, 0.3);
+}
+
+/* List Acara */
+.event-list-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #F8FAFC;
+  margin: 0 0 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.event-item {
+  background-color: #090E17;
+  border: 1px solid #1F2937;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  transition: border-color 0.2s;
+}
+
+.event-item:hover {
+  border-color: #FACC15;
+}
+
+.event-item h4 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  color: #FACC15;
+}
+
+.event-item p {
+  margin: 0;
+  font-size: 12px;
+  color: #94A3B8;
+}
+
+.empty-state {
+  font-size: 14px;
+  color: #94A3B8;
+  font-style: italic;
+  background: #090E17;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px dashed #374151;
+}
+
+/* ================= PROFIL & ADMINISTRASI ================= */
+.section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #F8FAFC;
+  border-left: 4px solid #FACC15;
+  padding-left: 8px;
+  margin: 0 0 16px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-title a {
+  font-size: 12px;
+  color: #FACC15;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: opacity 0.2s;
+}
+
+.section-title a:hover {
+  opacity: 0.8;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.profile-img {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  margin-bottom: 12px;
+}
+
+.profile-name {
+  font-weight: 700;
+  color: #F8FAFC;
+  margin: 0 0 4px 0;
+}
+
+.profile-major {
+  font-size: 14px;
+  color: #94A3B8;
+  margin: 0 0 16px 0;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  width: 100%;
+  border-top: 1px solid #1F2937;
+  padding-top: 16px;
+  font-size: 12px;
+}
+
+.status-item p {
+  margin: 0 0 4px 0;
+  font-weight: 600;
+  color: #94A3B8;
+}
+
+.status-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-weight: 500;
+}
+
+.status-value.red { color: #EF4444; }
+.status-value.green { color: #10B981; }
+
+/* ================= OVERLAY & RESPONSIVE ================= */
+.sidebar-overlay {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .content-grid, .schedule-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 64px;
+    bottom: 0;
+    left: 0;
+    height: calc(100vh - 64px);
+    transform: translateX(-100%);
+    margin-left: 0 !important; 
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
+  }
+
+  .sidebar-overlay {
+    display: block;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 80;
+    backdrop-filter: blur(2px);
+  }
+
+  .floating-hamburger.open,
+  .floating-hamburger.closed {
+    left: 20px;
+  }
+}
+
+/* ================= DROPDOWN MENU SIDEBAR ================= */
+.menu-item-toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  cursor: pointer;
+  color: #94A3B8;
+  font-size: 14px;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.menu-item-toggle:hover {
+  background-color: #1F2937;
+  color: #FACC15;
+}
+
+.menu-item-toggle.active {
+  color: #FACC15;
+}
+
+.chevron-icon {
+  transition: transform 0.3s ease;
+}
+
+.chevron-icon.rotated {
+  transform: rotate(180deg);
+}
+
+.sub-menu {
+  list-style: none;
+  padding: 4px 0 4px 16px;
+  margin: 0;
+  border-left: 2px solid #1F2937;
+  margin-left: 16px;
+}
+
+.sub-menu li {
+  margin-bottom: 2px;
+}
+
+.sub-menu a {
+  display: block;
+  padding: 8px 16px;
+  text-decoration: none;
+  color: #94A3B8;
+  font-size: 13px;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+.sub-menu a:hover {
+  background-color: #1F2937;
+  color: #FACC15;
+}
+
+/* ================= DROPDOWN PROFIL (TOPBAR) ================= */
+.profile-dropdown-container {
+  position: relative;
+}
+
+.user-profile-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  border-left: 1px solid #1F2937;
+  padding-left: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  transition: opacity 0.2s;
+}
+
+.user-profile-btn:hover {
+  opacity: 0.8;
+}
+
+.user-profile-btn span {
+  font-size: 14px;
+  font-weight: 600;
+  color: #F8FAFC;
+}
+
+.profile-chevron {
+  transition: transform 0.3s ease;
+}
+
+.profile-chevron.rotated {
+  transform: rotate(180deg);
+}
+
+.profile-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 180px;
+  background: #111827;
+  border: 1px solid #1F2937;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  z-index: 120;
+  animation: fadeInDown 0.2s ease-out;
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.logout-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 16px;
+  background: transparent;
+  border: none;
+  color: #EF4444; /* Warna merah untuk logout */
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.logout-item:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
