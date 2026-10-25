@@ -6,7 +6,7 @@ import Link from 'next/link'
 import logoImg from './assets/sekber_logo.png'
 import mascotImg from './assets/mascoot.png' 
 
-const APP_VERSION = 'v1.0.1'
+const APP_VERSION = 'v1.0.2'
 const APP_CREDIT = '© 2026 Frederick Liko. All rights reserved.'
 
 // Pastikan Anda sudah meng-import gambar Anda di sini
@@ -121,8 +121,10 @@ export default function HomeScreen() {
           </p>
 
           <div className="hero-cta-group">
-            <a href="#kontak" className="hero-cta primary">Daftar Sekarang</a>
-            <a href="#tentang" className="hero-cta secondary">Kenali Kami</a>
+            <Link href="/login" className="hero-cta primary">
+            Log in
+            </Link>
+            <a href="#tentang" className="hero-cta secondary">Contact Us</a>
           </div>
         </div>
 
