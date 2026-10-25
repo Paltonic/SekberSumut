@@ -37,6 +37,9 @@ const heroSlides = [
 
 export default function HomeScreen() {
   const [currentSlide, setCurrentSlide] = useState(0)
+  
+  // STATE UNTUK MOBILE MENU
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   // Fungsi untuk pindah ke slide berikutnya
   const goToNextSlide = () => {
@@ -85,17 +88,40 @@ export default function HomeScreen() {
           </nav>
 
           <div className="nav-actions">
-            {/* Ganti <a> menjadi <Link> dan arahkan href ke "/login" */}
             <Link href="/login" className="nav-btn primary">
-            Log in
+              Log in
             </Link>
-            
             <a href="#kontak" className="nav-btn secondary">Contact Us</a>
           </div>
 
-          <button className="nav-hamburger" aria-label="Menu">
+          {/* TOMBOL HAMBURGER DENGAN FUNGSI ONCLICK */}
+          <button 
+            className={`nav-hamburger ${isMenuOpen ? 'active' : ''}`} 
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle Menu"
+          >
             <span></span><span></span><span></span>
           </button>
+
+          {/* MOBILE MENU DROPDOWN */}
+          {isMenuOpen && (
+            <div className="mobile-menu">
+              <a href="#beranda" onClick={() => setIsMenuOpen(false)}>Home</a>
+              <a href="#program" onClick={() => setIsMenuOpen(false)}>Program</a>
+              <a href="#tentang" onClick={() => setIsMenuOpen(false)}>About</a>
+              <a href="#kontak" onClick={() => setIsMenuOpen(false)}>Contact</a>
+              
+              <div className="mobile-menu-actions">
+                <Link href="/login" className="nav-btn primary" onClick={() => setIsMenuOpen(false)}>
+                  Log in
+                </Link>
+                <a href="#kontak" className="nav-btn secondary" onClick={() => setIsMenuOpen(false)}>
+                  Contact Us
+                </a>
+              </div>
+            </div>
+          )}
+
         </div>
       </header>
 
@@ -122,7 +148,7 @@ export default function HomeScreen() {
 
           <div className="hero-cta-group">
             <Link href="/login" className="hero-cta primary">
-            Log in
+              Log in
             </Link>
             <a href="#tentang" className="hero-cta secondary">Contact Us</a>
           </div>
