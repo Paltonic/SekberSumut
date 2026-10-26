@@ -169,6 +169,15 @@ export default function PspPage() {
   };
 
   const handleSendAndUnlock = async () => {
+    // VALIDASI: Cek apakah Nama, Kota, dan Tanggal sudah diisi
+    if (!meta.nama.trim() || !meta.kota.trim() || !meta.tanggal) {
+      setSendError('⚠ Harap lengkapi Nama PMV/C, Kab/Kota, dan Tanggal Identifikasi di bagian atas terlebih dahulu!');
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return; 
+    }
+
     setIsSending(true);
     setSendError('');
 
@@ -178,22 +187,18 @@ export default function PspPage() {
       XLSX.utils.book_append_sheet(wb, ws, "Formulir Identifikasi PSP");
       
       const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-      const fileName = `Formulir_Identifikasi_${meta.nama.replace(/\s+/g, '_') || 'PMV'}.xlsx`;
+      const fileName = `Formulir_Identifikasi_${meta.nama.replace(/\s+/g, '_')}.xlsx`;
       
-      // PERBAIKAN 1: Gunakan objek File, bukan Blob
       const file = new File([excelBuffer], fileName, { 
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
       });
 
       const formData = new FormData();
-      // PERBAIKAN 2: Gunakan nama key tanpa spasi/simbol khusus
       formData.append('Nama_PMVC', meta.nama);
       formData.append('Kabupaten_Kota', meta.kota);
       formData.append('Tanggal_Identifikasi', meta.tanggal);
       formData.append('Status', stats.complete ? 'Complete' : 'Not complete');
       formData.append('Hasil', stats.level);
-      
-      // PERBAIKAN 3: FormSubmit mewajibkan nama key persis 'attachment'
       formData.append('attachment', file); 
 
       const response = await fetch('https://formsubmit.co/ajax/psdmsekberpmvbisumut@gmail.com', {
@@ -204,7 +209,7 @@ export default function PspPage() {
 
       if (response.ok) {
         setIsSubmitted(true);
-        setShowResult(true); // Buka skor HANYA setelah email terkirim
+        setShowResult(true);
       } else {
         setSendError('Gagal mengirim email. Periksa koneksi internet Anda dan coba lagi.');
       }
@@ -368,7 +373,7 @@ export default function PspPage() {
                       onClick={handleSendAndUnlock} disabled={isSending}>
                       {isSending ? 'Mengirim File...' : 'Kirim & Lihat Hasil ›'}
                     </button>
-                    {sendError && <span style={{color: '#EF4444', fontSize: '12px'}}>{sendError}</span>}
+                    {sendError && <span style={{color: '#EF4444', fontSize: '12px', maxWidth: '250px', textAlign: 'right'}}>{sendError}</span>}
                   </div>
                 )
               ) : (
