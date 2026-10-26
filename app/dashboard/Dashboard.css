@@ -30,12 +30,11 @@
   gap: 12px;
 }
 
-/* HAPUS .logo-placeholder, GANTI DENGAN INI */
 .topbar-logo {
   width: 44px;
   height: 44px;
-  object-fit: contain; /* Memastikan logo tidak gepeng */
-  filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.2)); /* Efek glow tipis */
+  object-fit: contain; 
+  filter: drop-shadow(0 0 8px rgba(250, 204, 21, 0.2)); 
 }
 
 .brand-text {
@@ -45,16 +44,16 @@
 }
 
 .brand-text h1 {
-  font-size: 15px; /* Sedikit diperbesar */
-  font-weight: 800; /* Dipertebal */
+  font-size: 15px; 
+  font-weight: 800; 
   color: #FFFFFF;
   margin: 0;
   letter-spacing: 0.5px;
 }
 
 .brand-text h1.sec{
-  font-size: 15px; /* Sedikit diperbesar */
-  font-weight: 800; /* Dipertebal */
+  font-size: 15px; 
+  font-weight: 800; 
   color: #FACC15;
   margin: 0;
   letter-spacing: 0.5px;
@@ -104,40 +103,6 @@
   overflow: hidden; 
 }
 
-/* ================= FLOATING HAMBURGER ================= */
-.floating-hamburger {
-  position: fixed;
-  top: 80px; 
-  z-index: 110;
-  background: #111827;
-  border: 1px solid #1F2937;
-  color: #94A3B8;
-  padding: 8px;
-  border-radius: 8px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: left 0.3s ease, opacity 0.3s ease, background 0.2s, color 0.2s;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-}
-
-.floating-hamburger:hover {
-  opacity: 1 !important;
-  color: #FACC15;
-  background-color: #1F2937;
-}
-
-.floating-hamburger.open {
-  left: 270px; 
-  opacity: 0.5;
-}
-
-.floating-hamburger.closed {
-  left: 20px;
-  opacity: 1;
-}
-
 /* ================= SIDEBAR ================= */
 .sidebar {
   width: 256px;
@@ -156,7 +121,6 @@
   margin-left: -256px; 
 }
 
-/* Search Bar (Sudah diperbaiki tidak terpotong) */
 .sidebar-search {
   padding: 12px 16px; 
   border-bottom: 1px solid #1F2937;
@@ -550,9 +514,10 @@
     backdrop-filter: blur(2px);
   }
 
+  /* ✅ PERBAIKAN: Tombol hamburger nempel di pinggir layar saat mode Mobile */
   .floating-hamburger.open,
   .floating-hamburger.closed {
-    left: 20px;
+    left: 0px; 
   }
 }
 
@@ -675,7 +640,7 @@
   padding: 12px 16px;
   background: transparent;
   border: none;
-  color: #EF4444; /* Warna merah untuk logout */
+  color: #EF4444; 
   font-size: 14px;
   font-weight: 600;
   text-align: left;
