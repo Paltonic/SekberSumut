@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import './formpsp.css'; 
+import './formpsp.css';
 import { GROUPS, ITEMS, MARK_META, STORAGE_KEY, type MarkKey } from '../../data/psp';
 
 const LEVEL_CLASS: Record<string, string> = {
@@ -15,6 +15,8 @@ export default function PspPage() {
   const [notes, setNotes] = useState<Record<number, string>>({});
   const [meta, setMeta] = useState({ nama: '', kota: '', tanggal: '' });
   const [ready, setReady] = useState(false);
+  const [currentGroup, setCurrentGroup] = useState(0);
+  const [showResult, setShowResult] = useState(false); // State untuk Modal Hasil
 
   useEffect(() => {
     try {
@@ -52,15 +54,34 @@ export default function PspPage() {
              total: ITEMS.length, complete: filled === ITEMS.length };
   }, [marks]);
 
+  /* ============ PAGINATION ============ */
+  const totalGroups = GROUPS.length;
+  const group = GROUPS[currentGroup];
+  const isFirst = currentGroup === 0;
+  const isLast = currentGroup === totalGroups - 1;
+
+  const isGroupComplete = (g: typeof GROUPS[0]) =>
+    g.items.every(it => marks[it.no]);
+  const groupComplete = group ? isGroupComplete(group) : false;
+
+  const changePage = (idx: number) => {
+    if (idx < 0 || idx >= totalGroups) return;
+    setCurrentGroup(idx);
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  /* ============ HANDLERS ============ */
   const setMark   = (no: number, m: MarkKey) => setMarks(p => ({ ...p, [no]: m }));
   const clearMark = (no: number) => setMarks(p => { const n = { ...p }; delete n[no]; return n; });
   const resetAll  = () => {
     if (!confirm('Kosongkan seluruh penilaian dan keterangan?')) return;
-    setMarks({}); setNotes({});
+    setMarks({}); setNotes({}); setShowResult(false);
   };
 
   return (
-    <div className="psp-page">
+    <div className={`psp-page ${stats.complete ? 'psp-page--complete' : ''}`}>
       {/* ---------- PAGE HEADER ---------- */}
       <div className="psp-pageHeader">
         <div>
@@ -88,21 +109,53 @@ export default function PspPage() {
         </div>
       </div>
 
-      {/* ---------- TOOLBAR ---------- */}
+      {/* ---------- TOOLBAR + PAGER ---------- */}
       <div className="psp-toolbar">
         <p className="psp-toolbarText">
           <strong>{stats.filled}</strong> dari <strong>{stats.total}</strong> butir telah dinilai
         </p>
-        <button type="button" className="psp-resetBtn" onClick={resetAll}>Reset Semua</button>
+        <div className="psp-toolbarActions">
+          <div className="psp-pager">
+            <button type="button" className="psp-pagerBtn"
+              onClick={() => changePage(currentGroup - 1)} disabled={isFirst}>
+              ‹ Sebelumnya
+            </button>
+            <span className="psp-pagerInfo">
+              <b>{currentGroup + 1}</b> / {totalGroups}
+            </span>
+            <button type="button" className="psp-pagerBtn psp-pagerBtnPrimary"
+              onClick={() => changePage(currentGroup + 1)} disabled={isLast}>
+              Selanjutnya ›
+            </button>
+          </div>
+          <button type="button" className="psp-resetBtn" onClick={resetAll}>Reset Semua</button>
+        </div>
       </div>
 
-      {/* ---------- DAFTAR BUTIR ---------- */}
-      {GROUPS.map(group => (
-        <section key={group.key} className="psp-group">
+      {/* ---------- STEP INDICATOR ---------- */}
+      <div className="psp-steps">
+        {GROUPS.map((g, i) => {
+          const done = isGroupComplete(g);
+          return (
+            <button key={g.key} type="button"
+              onClick={() => changePage(i)}
+              className={`psp-step ${i === currentGroup ? 'active' : ''} ${done ? 'done' : ''}`}
+              title={`${g.komponen} › ${g.item}`}>
+              <span className="psp-stepNo">{done ? '✓' : i + 1}</span>
+              <span className="psp-stepLabel">{g.komponen}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* ---------- HALAMAN AKTIF ---------- */}
+      {group && (
+        <section className="psp-group">
           <h2 className="psp-groupTitle">
             <span className="psp-komponen">{group.komponen}</span>
             <span className="psp-groupSep">›</span>
             <span>{group.item}</span>
+            {groupComplete && <span className="psp-groupDone">✓ Selesai</span>}
           </h2>
           <div className="psp-cards">
             {group.items.map(it => {
@@ -153,33 +206,110 @@ export default function PspPage() {
               );
             })}
           </div>
-        </section>
-      ))}
 
-      {/* ---------- DOCK AKUMULASI ---------- */}
-      <div className="psp-dock">
-        <div className="psp-dockInner">
-          <div className="psp-progressRow">
-            <div className="psp-progressTrack">
-              <div className="psp-progressFill" data-level={stats.level}
-                style={{ width: `${Math.min(stats.percent * 100, 100)}%` }} />
-            </div>
-            <span className="psp-percentText">{(stats.percent * 100).toFixed(1)}%</span>
-            <span className={`psp-levelBadge ${LEVEL_CLASS[stats.level]}`}>
-              {stats.level}
+          {/* ---------- NAVIGASI BAWAH HALAMAN ---------- */}
+          <div className="psp-groupNav">
+            <button type="button" className="psp-pagerBtn"
+              onClick={() => changePage(currentGroup - 1)} disabled={isFirst}>
+              ‹ Sebelumnya
+            </button>
+            <span className="psp-groupNavInfo">
+              Halaman {currentGroup + 1} dari {totalGroups}
+              {groupComplete && <span className="psp-groupNavTick"> ✓ komponen ini lengkap</span>}
             </span>
+            {isLast ? (
+              stats.complete ? (
+                <button type="button" className="psp-pagerBtn psp-pagerBtnPrimary psp-pulse"
+                  onClick={() => setShowResult(true)}>
+                  Lihat Rekap Hasil ›
+                </button>
+              ) : (
+                <span className="psp-groupNavDone" style={{ color: '#F59E0B', background: 'rgba(245, 158, 11, 0.1)', borderColor: 'rgba(245, 158, 11, 0.25)' }}>
+                  ⚠ Lengkapi dulu
+                </span>
+              )
+            ) : (
+              <button type="button" className="psp-pagerBtn psp-pagerBtnPrimary"
+                onClick={() => changePage(currentGroup + 1)}>
+                Selanjutnya ›
+              </button>
+            )}
           </div>
-          <div className="psp-statRow">
-            <span className="psp-stat"><span className="psp-dotGood" /> Exist, good <b>{stats.good}</b></span>
-            <span className="psp-stat"><span className="psp-dotNotGood" /> Exist, not good <b>{stats.notGood}</b></span>
-            <span className="psp-stat"><span className="psp-dotNotExist" /> Not exist <b>{stats.notExist}</b></span>
-            <span className="psp-stat">Total Poin <b>{stats.point}/{stats.maxPoint}</b></span>
-            <span className={`psp-statusPill ${stats.complete ? 'psp-statusDone' : 'psp-statusPending'}`}>
-              {stats.complete ? 'Complete' : 'Not complete'}
-            </span>
+        </section>
+      )}
+
+      {/* ---------- DOCK AKUMULASI (Hanya muncul saat 100% Selesai) ---------- */}
+      {stats.complete && (
+        <div className="psp-dock">
+          <div className="psp-dockInner">
+            <div className="psp-progressRow">
+              <div className="psp-progressTrack">
+                <div className="psp-progressFill" data-level={stats.level}
+                  style={{ width: `${Math.min(stats.percent * 100, 100)}%` }} />
+              </div>
+              <span className="psp-percentText">{(stats.percent * 100).toFixed(1)}%</span>
+              <span className={`psp-levelBadge ${LEVEL_CLASS[stats.level]}`}>
+                {stats.level}
+              </span>
+            </div>
+            <div className="psp-statRow">
+              <span className="psp-stat"><span className="psp-dotGood" /> Exist, good <b>{stats.good}</b></span>
+              <span className="psp-stat"><span className="psp-dotNotGood" /> Exist, not good <b>{stats.notGood}</b></span>
+              <span className="psp-stat"><span className="psp-dotNotExist" /> Not exist <b>{stats.notExist}</b></span>
+              <span className="psp-stat">Total Poin <b>{stats.point}/{stats.maxPoint}</b></span>
+              <span className="psp-statusPill psp-statusDone">
+                Complete
+              </span>
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
+      {/* ---------- MODAL REKAP HASIL ---------- */}
+      {showResult && (
+        <div className="psp-modalOverlay" onClick={() => setShowResult(false)}>
+          <div className="psp-modal" onClick={e => e.stopPropagation()}>
+            <div className="psp-modalHeader">
+              <h2 className="psp-modalTitle">Rekap Hasil Identifikasi</h2>
+              <button className="psp-modalClose" onClick={() => setShowResult(false)}>✕</button>
+            </div>
+            
+            <div className="psp-modalBody">
+              <div className="psp-modalHighlight">
+                <div className="psp-modalLevel">
+                  <span className={`psp-levelBadge ${LEVEL_CLASS[stats.level]}`} style={{ fontSize: '1.2rem', padding: '12px 24px' }}>
+                    {stats.level}
+                  </span>
+                </div>
+                <div className="psp-modalPercent">
+                  <span>Persentase</span>
+                  <strong>{(stats.percent * 100).toFixed(1)}%</strong>
+                </div>
+                <div className="psp-modalPoint">
+                  <span>Total Poin</span>
+                  <strong>{stats.point} / {stats.maxPoint}</strong>
+                </div>
+              </div>
+
+              <div className="psp-modalStats">
+                <div className="psp-modalStatItem psp-statGood">
+                  <span className="psp-dotGood" /> Exist, good <b>{stats.good}</b>
+                </div>
+                <div className="psp-modalStatItem psp-statNotGood">
+                  <span className="psp-dotNotGood" /> Exist, not good <b>{stats.notGood}</b>
+                </div>
+                <div className="psp-modalStatItem psp-statNotExist">
+                  <span className="psp-dotNotExist" /> Not exist <b>{stats.notExist}</b>
+                </div>
+              </div>
+            </div>
+
+            <div className="psp-modalFooter">
+              <button className="psp-pagerBtn" onClick={() => setShowResult(false)}>Tutup</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

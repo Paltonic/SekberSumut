@@ -17,6 +17,15 @@
   
   color: #F8FAFC;
   font-family: 'Inter', 'Segoe UI', sans-serif;
+  
+  /* Padding default saat dock belum muncul */
+  padding-bottom: 40px; 
+  transition: padding-bottom 0.3s ease;
+}
+
+/* Padding ekstra saat panel dock muncul (semua terisi) */
+.psp-page--complete {
+  padding-bottom: 200px;
 }
 
 .psp-page *, .psp-page *::before, .psp-page *::after {
@@ -99,6 +108,13 @@
 .psp-toolbarText { margin: 0; font-size: 14px; color: #94A3B8; }
 .psp-toolbarText strong { color: #FACC15; font-size: 16px; }
 
+.psp-toolbarActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .psp-resetBtn {
   border: 1px solid #374151;
   background: #111827;
@@ -113,6 +129,114 @@
 .psp-resetBtn:hover { 
   background: rgba(239, 68, 68, 0.1); 
   border-color: #EF4444; 
+}
+
+/* ============================== PAGER ============================== */
+.psp-pager {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.psp-pagerBtn {
+  border: 1px solid #374151;
+  background: #111827;
+  color: #F8FAFC;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.psp-pagerBtn:hover:not(:disabled) {
+  border-color: #FACC15;
+  color: #FACC15;
+}
+.psp-pagerBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.psp-pagerBtnPrimary {
+  background: rgba(250, 204, 21, 0.15);
+  border-color: rgba(250, 204, 21, 0.4);
+  color: #FACC15;
+}
+.psp-pagerBtnPrimary:hover:not(:disabled) {
+  background: rgba(250, 204, 21, 0.25);
+  border-color: #FACC15;
+}
+
+.psp-pagerInfo {
+  font-size: 13px;
+  color: #94A3B8;
+  padding: 0 8px;
+  white-space: nowrap;
+}
+.psp-pagerInfo b { color: #FACC15; }
+
+/* ============================== STEP INDICATOR ============================== */
+.psp-steps {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 4px 2px 10px;
+  margin-bottom: 20px;
+  scrollbar-width: thin;
+}
+.psp-steps::-webkit-scrollbar { height: 4px; }
+.psp-steps::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+
+.psp-step {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px 6px 6px;
+  border: 1px solid #1F2937;
+  background: #111827;
+  color: #94A3B8;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.psp-step:hover { border-color: #4B5563; color: #F8FAFC; }
+.psp-step.active {
+  border-color: #FACC15;
+  color: #FACC15;
+  background: rgba(250, 204, 21, 0.1);
+  box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.15);
+}
+.psp-step.done { border-color: rgba(16, 185, 129, 0.4); color: #10B981; }
+.psp-step.done.active { border-color: #FACC15; color: #FACC15; }
+
+.psp-stepNo {
+  width: 22px; height: 22px;
+  display: grid; place-items: center;
+  border-radius: 999px;
+  background: #1F2937;
+  font-size: 11px;
+  font-weight: 800;
+  color: #94A3B8;
+}
+.psp-step.active .psp-stepNo {
+  background: rgba(250, 204, 21, 0.2);
+  color: #FACC15;
+}
+.psp-step.done .psp-stepNo {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10B981;
+}
+
+.psp-stepLabel {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* ============================== GROUP ============================== */
@@ -144,6 +268,18 @@
 
 .psp-groupSep { color: #4B5563; }
 .psp-cards { display: grid; gap: 16px; }
+
+/* Badge Selesai per grup */
+.psp-groupDone {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--good-bg);
+  color: var(--good);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
 
 /* ============================== CARD ============================== */
 .psp-card {
@@ -206,7 +342,7 @@
 
 .psp-kondisi li { 
   display: flex; 
-  align-items: flex-start; /* Agar sejajar dari atas jika teksnya panjang */
+  align-items: flex-start; 
   gap: 16px; 
   font-size: 13px; 
   color: #CBD5E1; 
@@ -222,7 +358,6 @@
   background: #111827;
 }
 
-/* ✅ PERBAIKAN UTAMA: Memberikan lebar tetap pada badge agar sejajar lurus */
 .psp-badge { 
   flex: 0 0 auto; 
   margin-top: 0; 
@@ -230,8 +365,8 @@
   font-weight: 700; 
   padding: 4px 10px; 
   border-radius: 6px; 
-  width: 130px; /* Lebar dikunci */
-  text-align: center; /* Teks di dalam badge ke tengah */
+  width: 130px; 
+  text-align: center; 
 }
 
 .psp-badgeGood { background: var(--good-bg); color: var(--good); border: 1px solid rgba(16, 185, 129, 0.2); }
@@ -281,6 +416,42 @@
 }
 .psp-note::placeholder { color: #4B5563; }
 .psp-note:focus { border-color: #FACC15; box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.1); }
+
+/* ============================== GROUP NAV (bawah halaman) ============================== */
+.psp-groupNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+  padding: 16px;
+  background: #111827;
+  border: 1px solid #1F2937;
+  border-radius: 12px;
+}
+
+.psp-groupNavInfo {
+  font-size: 13px;
+  color: #94A3B8;
+  text-align: center;
+  flex: 1 1 auto;
+}
+.psp-groupNavTick {
+  color: var(--good);
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.psp-groupNavDone {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--good);
+  padding: 8px 14px;
+  background: var(--good-bg);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  border-radius: 8px;
+}
 
 /* ============================== DOCK (AKUMULASI BAWAH) ============================== */
 .psp-dock {
@@ -343,9 +514,12 @@
   .psp-dock { left: 0; }
   
   .psp-page { 
-    padding-bottom: 250px; 
+    padding-bottom: 40px; 
     padding-left: 56px; 
     padding-right: 16px;
+  }
+  .psp-page--complete {
+    padding-bottom: 260px;
   }
   .psp-dockInner {
     padding-left: 56px;
@@ -354,7 +528,9 @@
 }
 
 @media (max-width: 640px) {
-  .psp-page { padding: 16px 14px 300px 56px; }
+  .psp-page { padding: 16px 14px 40px 56px; }
+  .psp-page--complete { padding-bottom: 320px; }
+
   .psp-pageHeader { padding: 20px; }
   .psp-card { padding: 16px; gap: 12px; }
   .psp-option { flex: 1 1 100%; justify-content: flex-start; }
@@ -363,20 +539,194 @@
   .psp-stat { flex: 1 1 40%; justify-content: center; }
   .psp-dockInner { padding-left: 56px; }
   
-  /* Penyesuaian kartu kondisi di mobile */
   .psp-kondisi li {
     flex-direction: column;
     gap: 8px;
   }
   
-  /* Di mobile, lebarkan badge kembali mengikuti teks */
   .psp-badge {
     width: auto;
   }
+
+  /* Responsive Toolbar & Nav */
+  .psp-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .psp-toolbarActions {
+    justify-content: space-between;
+    width: 100%;
+  }
+  .psp-pager { flex: 1 1 auto; justify-content: space-between; }
+  .psp-pagerBtn { padding: 8px 10px; font-size: 12px; }
+  .psp-pagerInfo { padding: 0 4px; font-size: 12px; }
+
+  .psp-groupNav {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  .psp-groupNavInfo { order: -1; margin-bottom: 4px; }
 }
 
 @media print {
-  .psp-dock, .psp-toolbar { display: none; }
+  .psp-dock, .psp-toolbar, .psp-steps, .psp-groupNav { display: none; }
   .psp-page { padding-bottom: 0; background: #ffffff; color: #000; padding-left: 0; }
+  .psp-page--complete { padding-bottom: 0; }
   .psp-dockInner { padding-left: 0; }
+}
+
+/* ============================== MODAL HASIL ============================== */
+.psp-modalOverlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 20px;
+  animation: pspFadeIn 0.2s ease-out;
+}
+
+.psp-modal {
+  background: #111827;
+  border: 1px solid #1F2937;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  animation: pspSlideUp 0.3s ease-out;
+}
+
+.psp-modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid #1F2937;
+}
+
+.psp-modalTitle {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #F8FAFC;
+}
+
+.psp-modalClose {
+  background: transparent;
+  border: none;
+  color: #94A3B8;
+  font-size: 20px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.psp-modalClose:hover { color: #EF4444; }
+
+.psp-modalBody {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.psp-modalHighlight {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #090E17;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #374151;
+}
+
+.psp-modalPercent, .psp-modalPoint {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+}
+.psp-modalPercent span, .psp-modalPoint span {
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #94A3B8;
+}
+.psp-modalPercent strong, .psp-modalPoint strong {
+  font-size: 20px;
+  color: #FACC15;
+}
+
+.psp-modalStats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.psp-modalStatItem {
+  background: #1F2937;
+  border: 1px solid #374151;
+  border-radius: 8px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #94A3B8;
+  text-align: center;
+}
+.psp-modalStatItem b {
+  font-size: 20px;
+  color: #F8FAFC;
+}
+.psp-statGood { border-color: rgba(16, 185, 129, 0.3); }
+.psp-statNotGood { border-color: rgba(245, 158, 11, 0.3); }
+.psp-statNotExist { border-color: rgba(239, 68, 68, 0.3); }
+
+.psp-modalFooter {
+  padding: 16px 24px;
+  border-top: 1px solid #1F2937;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Animasi */
+@keyframes pspFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes pspSlideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes pspPulse {
+  0% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(250, 204, 21, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0); }
+}
+
+/* Tombol berkedip untuk menarik perhatian */
+.psp-pulse {
+  animation: pspPulse 2s infinite;
+}
+
+@media (max-width: 640px) {
+  .psp-modalHighlight {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .psp-modalStats {
+    grid-template-columns: 1fr;
+  }
+  .psp-modalStatItem {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 12px 16px;
+    text-align: left;
+  }
 }
