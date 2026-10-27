@@ -513,12 +513,6 @@
     z-index: 80;
     backdrop-filter: blur(2px);
   }
-
-  /* ✅ PERBAIKAN: Tombol hamburger nempel di pinggir layar saat mode Mobile */
-  .floating-hamburger.open,
-  .floating-hamburger.closed {
-    left: 0px; 
-  }
 }
 
 /* ================= DROPDOWN MENU SIDEBAR ================= */

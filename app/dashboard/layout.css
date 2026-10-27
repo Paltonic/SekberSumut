@@ -243,4 +243,12 @@
   .dashboard-container[data-sidebar="closed"] {
     --sidebar-width: 0px;
   }
+
+  .floating-hamburger.closed {
+    left: 0px;
+  }
+
+  .floating-hamburger.open {
+    left: 260px; /* Ini bikin dia geser ke kanan saat menu dibuka */
+  }
 }

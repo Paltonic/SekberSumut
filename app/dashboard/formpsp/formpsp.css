@@ -509,7 +509,7 @@
 .psp-statusPending { background: #1F2937; color: #94A3B8; border: 1px solid #374151; }
 
 /* ============================== RESPONSIVE ============================== */
-@media (max-width: 1024px) {
+/* @media (max-width: 1024px) {
   .psp-pageHeader { grid-template-columns: 1fr; gap: 20px; }
   .psp-dock { left: 0; }
   
@@ -524,6 +524,67 @@
   .psp-dockInner {
     padding-left: 56px;
     padding-right: 16px;
+  }
+} */
+
+@media (max-width: 1024px) {
+  .psp-page {
+    /* 1. Jarak atas buat ngasih ruang header (misal 80px) */
+    /* 2. Jarak kiri-kanan dibikin 24px biar mirip dashboard */
+    /* 3. Jarak bawah 40px */
+    padding: 80px 24px 40px !important; 
+    
+    /* Paksa lebar penuh biar nggak geser ke kiri */
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  .psp-page--complete {
+    padding-bottom: 260px !important;
+  }
+
+  /* Ini buat ngerapihin isi form di dalamnya biar ikut melebar */
+  .psp-form-container, 
+  .psp-card, 
+  .psp-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+  }
+
+  .psp-dockInner {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  
+  /* 1. Bikin Judul dan Form jadi tumpuk atas-bawah (1 kolom) */
+  .psp-pageHeader, /* Ganti dengan class pembungkus form kamu */
+  .form-grid-wrapper { 
+    display: flex !important;
+    flex-direction: column !important; /* Ini kuncinya: bikin berderet ke bawah */
+    gap: 20px !important; /* Kasih jarak antara judul dan input */
+  }
+
+  /* 2. Rapihin teks judul biar nggak kegedean di HP */
+  .psp-pageHeader h1, 
+  .psp-title {
+    font-size: 20px !important; /* Kecilin dikit */
+    line-height: 1.4 !important;
+  }
+
+  /* 3. Rapihin tombol di bawah (Sebelumnya, 1/12, Selanjutnya, Reset) */
+  .psp-navigation-buttons { /* Sesuaikan nama class-nya */
+    display: flex !important;
+    flex-direction: column !important; /* Tombol numpuk ke bawah */
+    gap: 10px !important;
+  }
+  
+  .psp-navigation-buttons button {
+    width: 100% !important; /* Bikin tombol selebar layar biar gampang dipencet */
   }
 }
 
