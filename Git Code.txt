@@ -1,0 +1,26 @@
+Create Next JS :
+npx create-next-app@latest
+
+CLone Pertama kali:
+git config --global user.name "Nama Kamu"
+git config --global user.email "email@kamu.com"
+git clone https://github.com/username/nama-repo.git
+git remote -v
+
+Pull berikutnya:
+git pull origin main
+
+Push Pertama kali:
+git init
+git add .
+git commit -m "Initial commit"
+git config --global user.name "Nama Kamu"
+git config --global user.email "email@kamu.com"
+git remote add origin https://github.com/username/proyek-nextjs.git
+git branch -M main
+git push -u origin main
+
+Push berikutnya:
+git add .
+git commit -m "deskripsi perubahan"
+git push
