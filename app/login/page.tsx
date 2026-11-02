@@ -12,7 +12,8 @@ import loginImg from '../assets/bg_login.png';
 const validUsers = [
   { username: 'Admin Sekber', password: '@Admin123' },
   { username: 'PMBE', password: '@User88' },
-  { username: 'PMVDA', password: '@User123' }
+  { username: 'PMVDA', password: '@User123' },
+  { username: 'PMVMAS', password: '@User045' }
 ];
 
 export default function LoginPage() {

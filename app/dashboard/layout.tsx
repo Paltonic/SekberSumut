@@ -32,6 +32,11 @@ const userProfiles: Record<string, any> = {
     status: 'Aktif', isActive: true, pspStatus: 'Selesai', isPspActive: true,
     avatarUrl: 'https://i.pravatar.cc/150?img=13',
   },
+  'PMVMAS': {
+    major: 'PMV Maha Aura Sala', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: 'https://i.pravatar.cc/150?img=13',
+  },
 };
 
 /* ---------- Menu ---------- */
