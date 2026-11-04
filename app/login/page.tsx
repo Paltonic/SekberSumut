@@ -4,13 +4,13 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { User, Lock, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../lib/firebase'; // Sesuaikan path jika perlu
 import './LoginPage.css';
 import logoImg from '../assets/sekber_logo.png'; 
 import loginImg from '../assets/bg_login.png'; 
 
-// --- DAFTAR AKUN (TAMBAHKAN DI SINI) ---
 const validUsers = [
-  { username: 'Admin Sekber', password: '@Admin123' },
   { username: 'PMBE', password: '@User88' },
   { username: 'PMVDA', password: '@User123' },
   { username: 'PMVMAS', password: '@User045' }
@@ -25,30 +25,43 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMsg('');
 
-    // Simulasi loading
-    setTimeout(() => {
-      setIsLoading(false);
-
-      // Cek apakah username & password ada di dalam list validUsers
-      const isValidUser = validUsers.some(
-        (user) => user.username === username && user.password === password
-      );
-
-      if (isValidUser) {
-        // Jika cocok
+    // LOGIKA ADMIN (FIREBASE AUTH)
+    if (username === 'Admin Sekber') {
+      try {
+        // Menggunakan email tiruan khusus untuk admin
+        const adminEmail = 'adminsekber@gmail.com'; 
+        await signInWithEmailAndPassword(auth, adminEmail, password);
+        
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('username', username);
         router.push('/dashboard');
-      } else {
-        // Jika tidak cocok
-        setErrorMsg('Username atau Password salah. Silakan coba lagi.');
+      } catch (error) {
+        setIsLoading(false);
+        setErrorMsg('Password Admin salah atau akun belum didaftarkan di Firebase.');
       }
-    }, 1500);
+    } 
+    // LOGIKA USER BIASA (LOCALSTORAGE)
+    else {
+      setTimeout(() => {
+        setIsLoading(false);
+        const isValidUser = validUsers.some(
+          (user) => user.username === username && user.password === password
+        );
+
+        if (isValidUser) {
+          localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem('username', username);
+          router.push('/dashboard');
+        } else {
+          setErrorMsg('Username atau Password salah. Silakan coba lagi.');
+        }
+      }, 1000);
+    }
   };
 
   return (
@@ -74,8 +87,6 @@ export default function LoginPage() {
             <h2>Login</h2>
             <p>Silakan masuk ke akun Anda</p>
           </div>
-
-          {/* PESAN ERROR DI ATAS SUDAH DIHAPUS DARI SINI */}
 
           <form onSubmit={handleLogin}>
             <div className="form-group">
@@ -122,7 +133,6 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {/* PESAN ERROR DIPINDAHKAN KE SINI (BAWAH TOMBOL) */}
           {errorMsg && (
             <div className="error-message">
               {errorMsg}

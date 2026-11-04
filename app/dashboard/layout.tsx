@@ -9,11 +9,11 @@ import {
   Bell, MessageCircle, User, Search, ChevronDown,
   Menu, LogOut,
 } from 'lucide-react';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../lib/firebase'; // Pastikan path ini benar
 import './layout.css';
 import logoIMG from '../assets/sekber_logo.png';
 import logoPMBE from '../assets/logo_pmbe.png';
-
-// ❌ HAPUS BARIS INI: export const instant = false;
 
 /* ---------- Profil Dummy ---------- */
 const userProfiles: Record<string, any> = {
@@ -76,10 +76,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   useEffect(() => {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
     const savedUser  = localStorage.getItem('username');
+    
     if (!isLoggedIn || !savedUser) {
       router.push('/login');
       return;
     }
+    
     setUsername(savedUser);
     setProfile(userProfiles[savedUser] || {
       major: 'Tidak Diketahui', divisi: 'Anggota',
@@ -89,7 +91,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     setIsLoading(false);
   }, [router]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Gagal logout dari Firebase", error);
+    }
+    
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('username');
     router.push('/login');
@@ -205,10 +213,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {/* ================= KONTEN ================= */}
           <main className="content-area" style={{ position: 'relative' }}>
             
-            {/* 1. SELALU RENDER CHILDREN (Agar Next.js tidak protes) */}
+            {/* Render Halaman (Dashboard) */}
             {children}
 
-            {/* 2. LOADING OVERLAY (Menutupi konten jika data belum siap) */}
+            {/* Loading Overlay */}
             {isLoading && (
               <div style={{
                 position: 'fixed', inset: 0, background: '#0f172a',
