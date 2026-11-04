@@ -91,9 +91,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     setIsLoading(false);
   }, [router]);
 
-  const handleLogout = async () => {
+    const handleLogout = async () => {
     try {
-      await signOut(auth);
+      if (auth) { // <-- TAMBAHKAN PENGECEKAN INI
+        await signOut(auth);
+      }
     } catch (error) {
       console.error("Gagal logout dari Firebase", error);
     }

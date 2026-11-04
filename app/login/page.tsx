@@ -33,6 +33,11 @@ export default function LoginPage() {
     // LOGIKA ADMIN (FIREBASE AUTH)
     if (username === 'Admin Sekber') {
       try {
+        // PENGAMAN: Pastikan auth sudah terinisialisasi
+        if (!auth) {
+          throw new Error("Konfigurasi Firebase belum siap. Pastikan .env.local sudah diisi dan server di-restart.");
+        }
+
         // Menggunakan email tiruan khusus untuk admin
         const adminEmail = 'adminsekber@gmail.com'; 
         await signInWithEmailAndPassword(auth, adminEmail, password);
@@ -40,9 +45,18 @@ export default function LoginPage() {
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('username', username);
         router.push('/dashboard');
-      } catch (error) {
+      } catch (error: any) {
         setIsLoading(false);
-        setErrorMsg('Password Admin salah atau akun belum didaftarkan di Firebase.');
+        console.error("Login Error:", error);
+        
+        // Menampilkan pesan error yang lebih spesifik
+        if (error.code === 'auth/invalid-credential' || error.code === 'auth/wrong-password') {
+          setErrorMsg('Password Admin salah.');
+        } else if (error.code === 'auth/user-not-found') {
+          setErrorMsg('Akun Admin belum didaftarkan di Firebase.');
+        } else {
+          setErrorMsg(error.message || 'Terjadi kesalahan saat login Admin.');
+        }
       }
     } 
     // LOGIKA USER BIASA (LOCALSTORAGE)

@@ -8,7 +8,7 @@ import {
 import { 
   collection, onSnapshot, addDoc, deleteDoc, doc, query, orderBy 
 } from 'firebase/firestore';
-import { db } from '../../lib/firebase'; // Pastikan path ini benar
+import { db } from '../../lib/firebase'; 
 import { useUser } from './layout'; 
 import './Dashboard.css'; 
 
@@ -25,19 +25,16 @@ export default function DashboardPage() {
   const isAdmin = username === 'Admin Sekber';
 
   // ================= STATE KALENDER & WAKTU =================
-  // Gunakan null dulu untuk menghindari error prerender Next.js
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [todayStr, setTodayStr] = useState<string>('');
   const [isCalendarLoading, setIsCalendarLoading] = useState(true);
 
-  // Inisialisasi waktu hanya setelah komponen di-mount di browser
   useEffect(() => {
     const now = new Date();
     setCurrentDate(now);
     setSelectedDate(now);
     
-    // Helper format tanggal ke YYYY-MM-DD
     const formatDate = (date: Date) => {
       const y = date.getFullYear();
       const m = String(date.getMonth() + 1).padStart(2, '0');
@@ -56,8 +53,7 @@ export default function DashboardPage() {
 
   // 1. Tarik data real-time dari Firestore
   useEffect(() => {
-    // Hanya jalankan jika database tersedia
-    if (!db) return;
+    if (!db) return; 
 
     const q = query(collection(db, "events"), orderBy("date", "asc"));
     const unsubscribe = onSnapshot(q, (snapshot) => {
@@ -76,7 +72,11 @@ export default function DashboardPage() {
     e.preventDefault();
     if (!newEvent.title || !newEvent.time || !selectedDate) return;
 
-    // Helper format tanggal (diperlukan di sini juga)
+    if (!db) {
+      alert("Koneksi database belum siap.");
+      return;
+    }
+
     const formatDate = (date: Date) => {
       const y = date.getFullYear();
       const m = String(date.getMonth() + 1).padStart(2, '0');
@@ -104,6 +104,12 @@ export default function DashboardPage() {
   // 3. Hapus data dari Firestore
   const handleDeleteEvent = async (id: string) => {
     if (!isAdmin) return;
+    
+    if (!db) {
+      alert("Koneksi database belum siap.");
+      return;
+    }
+
     if (confirm('Hapus jadwal ini?')) {
       try {
         await deleteDoc(doc(db, "events", id));
@@ -129,7 +135,7 @@ export default function DashboardPage() {
   const getDaysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate();
   const getFirstDayOfMonth = (year: number, month: number) => {
     const day = new Date(year, month, 1).getDay();
-    return day === 0 ? 6 : day - 1; // Senin = 0, Minggu = 6
+    return day === 0 ? 6 : day - 1; 
   };
 
   const formatDate = (date: Date) => {
@@ -141,7 +147,6 @@ export default function DashboardPage() {
 
   const selectedDateStr = selectedDate ? formatDate(selectedDate) : '';
   
-  // Generate array hari untuk kalender
   let calendarDays: { day: number; isCurrentMonth: boolean; dateObj: Date }[] = [];
   
   if (currentDate) {
@@ -149,15 +154,12 @@ export default function DashboardPage() {
     const firstDay = getFirstDayOfMonth(currentYear, currentMonth);
     const prevMonthDays = getDaysInMonth(currentYear, currentMonth - 1);
 
-    // Hari dari bulan sebelumnya
     for (let i = firstDay - 1; i >= 0; i--) {
       calendarDays.push({ day: prevMonthDays - i, isCurrentMonth: false, dateObj: new Date(currentYear, currentMonth - 1, prevMonthDays - i) });
     }
-    // Hari di bulan ini
     for (let i = 1; i <= daysInMonth; i++) {
       calendarDays.push({ day: i, isCurrentMonth: true, dateObj: new Date(currentYear, currentMonth, i) });
     }
-    // Hari dari bulan berikutnya
     const remainingDays = 42 - calendarDays.length;
     for (let i = 1; i <= remainingDays; i++) {
       calendarDays.push({ day: i, isCurrentMonth: false, dateObj: new Date(currentYear, currentMonth + 1, i) });
