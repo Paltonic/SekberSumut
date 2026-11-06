@@ -37,6 +37,16 @@ const userProfiles: Record<string, any> = {
     status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
     avatarUrl: 'https://i.pravatar.cc/150?img=13',
   },
+  'Ricky Martin' : {
+    major: 'Sekber PMVBI Sumut', divisi: 'Sekretaris Provinsi',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: 'https://i.pravatar.cc/150?img=13',
+  },
+  'Felicia Livana' : {
+    major: 'Sekber PMVBI Sumut', divisi: 'Wakil Sekretaris Provinsi III',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: 'https://i.pravatar.cc/150?img=13',
+  },
 };
 
 /* ---------- Menu ---------- */
