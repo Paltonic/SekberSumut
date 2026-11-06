@@ -168,20 +168,20 @@ export default function HomeScreen() {
         </div>
       </section>
 
-      {/* VALUES SECTION */}
+      {/* VALUES SECTION (3 PILAR) */}
       <section className="values-section">
         <div className="values-grid">
           <div className="value-item">
-            <h3 className="value-title">Saddha <span>(Keyakinan)</span></h3>
-            <p className="value-desc">Menumbuhkan keyakinan pada Tiratana sebagai landasan hidup.</p>
+            <h3 className="value-title">Theravada <span>(Dharmacakra)</span></h3>
+            <p className="value-desc">Ajaran dari mazhab Theravada yang menekankan pada dasar moralitas dan kedisiplinan.</p>
           </div>
           <div className="value-item">
-            <h3 className="value-title">Sila <span>(Karakter)</span></h3>
-            <p className="value-desc">Membangun karakter pemuda yang berintegritas dan bermoral.</p>
+            <h3 className="value-title">Mahayana <span>(Swastika)</span></h3>
+            <p className="value-desc">Ajaran dari mazhab Mahayana yang menekankan pada welas asih dan cinta kasih universal.</p>
           </div>
           <div className="value-item">
-            <h3 className="value-title">Panna <span>(Kebijaksanaan)</span></h3>
-            <p className="value-desc">Mengasah kebijaksanaan melalui pembelajaran dan pengalaman.</p>
+            <h3 className="value-title">Vajrayana <span>(Visvavajra)</span></h3>
+            <p className="value-desc">Ajaran dari mazhab Tantrayana/Vajrayana yang menekankan pada transformasi diri dan kebijaksanaan.</p>
           </div>
         </div>
       </section>
@@ -195,24 +195,24 @@ export default function HomeScreen() {
 
         <div className="program-grid">
           <div className="glass-card program-card">
-            <div className="program-icon">🧘</div>
-            <h3>Pengembangan Spiritual</h3>
-            <p>Kegiatan keagamaan, meditasi, dan pembelajaran Dhamma secara rutin.</p>
-          </div>
-          <div className="glass-card program-card">
             <div className="program-icon">🤝</div>
-            <h3>Sosial & Kemanusiaan</h3>
-            <p>Bakti sosial, donor darah, dan aksi tanggap bencana untuk masyarakat.</p>
+            <h3>Musyawarah & Temu Karya</h3>
+            <p>Wadah pengambilan keputusan dan silaturahmi melalui Musda, Munas, Mukerda, dan STKD.</p>
           </div>
           <div className="glass-card program-card">
-            <div className="program-icon">🎭</div>
-            <h3>Seni & Budaya</h3>
-            <p>Pelestarian budaya Buddhis dan wadah kreativitas seni bagi pemuda.</p>
+            <div className="program-icon">📚</div>
+            <h3>Kaderisasi & Pelatihan</h3>
+            <p>Peningkatan kapasitas pemuda melalui Bina Widya, Pelatda, dan Dhamma Vidya.</p>
           </div>
           <div className="glass-card program-card">
-            <div className="program-icon">⚽</div>
-            <h3>Olahraga & Rekreasi</h3>
-            <p>Turnamen olahraga dan kegiatan rekreasi untuk mempererat kebersamaan.</p>
+            <div className="program-icon">🧘</div>
+            <h3>Spiritual & Karakter</h3>
+            <p>Pembinaan karakter, pelatihan pemuda Buddhayana, dan pendampingan SMB GABI (IPGABI).</p>
+          </div>
+          <div className="glass-card program-card">
+            <div className="program-icon">🎉</div>
+            <h3>Event & Sosial</h3>
+            <p>Mempererat persaudaraan melalui Welcome Kalyanamitta, FlashMan, dan kegiatan bakti sosial.</p>
           </div>
         </div>
       </section>
@@ -226,22 +226,28 @@ export default function HomeScreen() {
 
         <div className="about-grid">
           <div className="glass-card about-text">
-            <p>
-              <strong>SEKBER PMVBI</strong> (Pemuda Buddhayana Sumatra Utara)
-              adalah organisasi kepemudaan yang berfokus pada pengembangan
-              spiritual, sosial, dan budaya bagi generasi muda Buddhis di
-              Sumatra Utara. Kami berkomitmen untuk menciptakan pemuda yang
-              berkarakter, solid, dan berkontribusi nyata bagi masyarakat.
+            <p style={{ marginBottom: '1.5rem' }}>
+              <strong>SEKBER PMVBI</strong> (Sekretariat Bersama Persaudaraan Muda-mudi Vihara-vihara Buddhayana Indonesia) adalah wadah persatuan berbentuk konfederasi dari PMV/C/B se-Indonesia. Dibentuk oleh dan beranggotakan PMV/C/B, bertujuan menumbuhkembangkan dan memberdayakan pemuda Buddhayana Indonesia yang peduli dan kompeten.
+            </p>
+            
+            <h4 style={{ color: 'var(--accent, #22c55e)', marginBottom: '0.5rem', fontWeight: 'bold' }}>Visi</h4>
+            <p style={{ marginBottom: '1.5rem', fontSize: '0.95rem' }}>
+              Menjadi Persaudaraan Muda-mudi Vihara/Cetiya di Indonesia yang memiliki Semangat Buddhayana dan kepedulian dengan menumbuhkembangkan kapasitas muda-mudi yang kompeten dan memadai melalui sistem pendidikan dan pelatihan yang terstruktur dan terpadu dengan memanfaatkan kemajuan teknologi informasi.
+            </p>
+
+            <h4 style={{ color: 'var(--accent, #22c55e)', marginBottom: '0.5rem', fontWeight: 'bold' }}>Misi</h4>
+            <p style={{ fontSize: '0.95rem' }}>
+              Mengamalkan dan berbagi tentang esensi Ajaran Buddha secara kontekstual melalui transformasi diri dan transformasi sosial dengan berpegang teguh pada nilai-nilai Non-sektarian, Inklusivisme, Pluralisme, dan Universalisme serta berkeyakinan kepada Dharmakaya (Sanghyang Adi Buddha).
             </p>
           </div>
           <div className="glass-card about-stats">
             <div className="stat-item">
-              <span className="stat-value">20+</span>
+              <span className="stat-value">40+</span>
               <span className="stat-label">Tahun Berkarya</span>
             </div>
             <div className="stat-item">
-              <span className="stat-value">500+</span>
-              <span className="stat-label">Anggota Aktif</span>
+              <span className="stat-value">60+</span>
+              <span className="stat-label">PMV/C/B Anggota</span>
             </div>
             <div className="stat-item">
               <span className="stat-value">50+</span>
