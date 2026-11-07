@@ -1,4 +1,11 @@
 /* app/dashboard/layout.css */
+:root {
+  --primary-yellow: #FACC15;
+  --yellow-glow: rgba(250, 204, 21, 0.4);
+
+  --font-display: 'Space Grotesk', 'Segoe UI', sans-serif;
+  --font-body: 'Inter', 'Segoe UI', sans-serif;
+}
 
 /* ============================== VARIABEL & BASE ============================== */
 .dashboard-container {
