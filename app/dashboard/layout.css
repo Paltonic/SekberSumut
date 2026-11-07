@@ -27,6 +27,21 @@
   line-height: 1;
 }
 
+.brand-accent {
+  color: var(--primary-yellow);
+  text-shadow: 0 0 14px var(--yellow-glow);
+}
+
+.nav-brand-sub {
+  font-family: var(--font-body);
+  font-size: 0.64rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 .dashboard-container *,
 .dashboard-container *::before,
 .dashboard-container *::after {
