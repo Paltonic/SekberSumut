@@ -1,9 +1,12 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useRef } from 'react'; // <-- Tambah useRef
 import * as XLSX from 'xlsx';
 import './formpsp.css';
 import { GROUPS, ITEMS, MARK_META, STORAGE_KEY, type MarkKey } from '../../data/psp';
+
+// ⬇️ MASUKKAN NOMOR WHATSAPP TUJUAN DI SINI (Format: 628xxx)
+const NOMOR_WA = '6281234567890'; 
 
 const LEVEL_CLASS: Record<string, string> = {
   Hijau: 'levelHijau',
@@ -12,6 +15,9 @@ const LEVEL_CLASS: Record<string, string> = {
 };
 
 export default function PspPage() {
+  // Buat Ref untuk menandai paling atas halaman
+  const topRef = useRef<HTMLDivElement>(null);
+
   const [marks, setMarks] = useState<Partial<Record<number, MarkKey>>>({});
   const [notes, setNotes] = useState<Record<number, string>>({});
   const [meta, setMeta] = useState({ nama: '', kota: '', tanggal: '' });
@@ -19,7 +25,6 @@ export default function PspPage() {
   const [currentGroup, setCurrentGroup] = useState(0);
   const [showResult, setShowResult] = useState(false);
   
-  // State untuk pengiriman dan penguncian skor
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [sendError, setSendError] = useState('');
@@ -63,7 +68,6 @@ export default function PspPage() {
              total: ITEMS.length, complete: filled === ITEMS.length };
   }, [marks]);
 
-  /* ============ PAGINATION ============ */
   const totalGroups = GROUPS.length;
   const group = GROUPS[currentGroup];
   const isFirst = currentGroup === 0;
@@ -76,13 +80,13 @@ export default function PspPage() {
   const changePage = (idx: number) => {
     if (idx < 0 || idx >= totalGroups) return;
     setCurrentGroup(idx);
-    if (typeof window !== 'undefined') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // ⬇️ MENGGUNAKAN SCROLLINTOVIEW AGAR LEBIH AMPUH ⬇️
+    if (topRef.current) {
+      topRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
-  /* ============ HANDLERS ============ */
-  // Jika ada perubahan data, sembunyikan kembali skor (harus kirim ulang untuk lihat skor baru)
   const handleDataChange = () => {
     if (isSubmitted) setIsSubmitted(false);
   };
@@ -113,7 +117,6 @@ export default function PspPage() {
     setIsSubmitted(false); setSendError('');
   };
 
-  /* ============ EXCEL & EMAIL GENERATOR ============ */
   const generateExcelData = () => {
     const data: any[][] = [];
     
@@ -169,11 +172,10 @@ export default function PspPage() {
   };
 
   const handleSendAndUnlock = async () => {
-    // VALIDASI: Cek apakah Nama, Kota, dan Tanggal sudah diisi
     if (!meta.nama.trim() || !meta.kota.trim() || !meta.tanggal) {
       setSendError('⚠ Harap lengkapi Nama PMV/C, Kab/Kota, dan Tanggal Identifikasi di bagian atas terlebih dahulu!');
-      if (typeof window !== 'undefined') {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (topRef.current) {
+        topRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
       return; 
     }
@@ -210,6 +212,27 @@ export default function PspPage() {
       if (response.ok) {
         setIsSubmitted(true);
         setShowResult(true);
+
+        const waMessage = 
+          `*HASIL IDENTIFIKASI PSP*\n` +
+          `================================\n` +
+          `*Nama PMV/C:* ${meta.nama}\n` +
+          `*Kab/Kota:* ${meta.kota}\n` +
+          `*Tanggal:* ${meta.tanggal}\n\n` +
+          `*Status Kelengkapan:* ${stats.complete ? 'Complete' : 'Not complete'}\n` +
+          `*Hasil Akhir:* ${stats.level} (${(stats.percent * 100).toFixed(1)}%)\n` +
+          `*Total Poin:* ${stats.point} / ${stats.maxPoint}\n\n` +
+          `*Rincian:*\n` +
+          `- Exist, Good: ${stats.good}\n` +
+          `- Exist, Not Good: ${stats.notGood}\n` +
+          `- Not Exist: ${stats.notExist}\n\n` +
+          `_(File Excel lengkap telah dikirim ke email panitia)_`;
+
+        const encodedMessage = encodeURIComponent(waMessage);
+        const waUrl = `https://wa.me/${NOMOR_WA}?text=${encodedMessage}`;
+        
+        window.open(waUrl, '_blank');
+
       } else {
         setSendError('Gagal mengirim email. Periksa koneksi internet Anda dan coba lagi.');
       }
@@ -222,7 +245,8 @@ export default function PspPage() {
   };
 
   return (
-    <div className={`psp-page ${stats.complete ? 'psp-page--complete' : ''}`}>
+    // ⬇️ TAMBAHKAN REF DI SINI ⬇️
+    <div ref={topRef} className={`psp-page ${stats.complete ? 'psp-page--complete' : ''}`}>
       {/* ---------- PAGE HEADER ---------- */}
       <div className="psp-pageHeader">
         <div>
@@ -371,7 +395,7 @@ export default function PspPage() {
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
                     <button type="button" className="psp-pagerBtn psp-pagerBtnPrimary psp-pulse"
                       onClick={handleSendAndUnlock} disabled={isSending}>
-                      {isSending ? 'Mengirim File...' : 'Kirim & Lihat Hasil ›'}
+                      {isSending ? 'Memproses...' : 'Kirim & Lihat Hasil ›'}
                     </button>
                     {sendError && <span style={{color: '#EF4444', fontSize: '12px', maxWidth: '250px', textAlign: 'right'}}>{sendError}</span>}
                   </div>
@@ -431,7 +455,7 @@ export default function PspPage() {
             
             <div className="psp-modalBody">
               <div className="psp-alert psp-alertSuccess" style={{ marginBottom: 0 }}>
-                ✓ Jawaban telah berhasil dikirim ke email tujuan. Anda bisa mengubah jawaban, tapi harus mengirim ulang untuk melihat skor terbaru.
+                ✓ Jawaban dan File Excel berhasil dikirim ke Email. Tab WhatsApp juga telah dibuka untuk mengirim ringkasan.
               </div>
 
               <div className="psp-modalHighlight">
