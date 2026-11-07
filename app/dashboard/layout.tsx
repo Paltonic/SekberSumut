@@ -130,9 +130,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <header className="topbar">
           <div className="topbar-left">
             <img src={logoIMG.src} alt="Logo SEKBER" className="topbar-logo" />
-            <div className="brand-text">
-              <h1>SEKBER</h1>
-              <h1 className="sec">PMVBI</h1>
+            <div className="nav-brand-text">
+              <span className="nav-brand-title">
+                SEKBER <span className="brand-accent">PMVBI</span>
+              </span>
+              <span className="nav-brand-sub">
+                Pemuda Buddhayana · Sumut
+              </span>
             </div>
           </div>
           <div className="topbar-right">
