@@ -150,7 +150,7 @@ export default function HomeScreen() {
             <Link href="/login" className="hero-cta primary">
               Log in
             </Link>
-            <a href="#tentang" className="hero-cta secondary">Contact Us</a>
+            <a href="#kontak" className="hero-cta secondary">Contact Us</a>
           </div>
         </div>
 
