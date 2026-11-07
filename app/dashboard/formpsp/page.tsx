@@ -21,7 +21,10 @@ export default function PspPage() {
   const [currentGroup, setCurrentGroup] = useState(0);
   const [showResult, setShowResult] = useState(false);
 
-  // Load dari local storage
+  // State untuk pengiriman Email
+  const [isSending, setIsSending] = useState(false);
+  const [sendStatus, setSendStatus] = useState<{ type: 'success' | 'error', msg: string } | null>(null);
+
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -35,7 +38,6 @@ export default function PspPage() {
     setReady(true);
   }, []);
 
-  // Simpan ke local storage
   useEffect(() => {
     if (!ready) return;
     try { 
@@ -97,6 +99,7 @@ export default function PspPage() {
   const resetAll = () => {
     if (!confirm('Kosongkan seluruh penilaian dan keterangan?')) return;
     setMarks({}); setNotes({}); setShowResult(false);
+    setSendStatus(null);
   };
 
   const generateExcelData = () => {
@@ -141,6 +144,9 @@ export default function PspPage() {
     return data;
   };
 
+  // ==========================================
+  // FUNGSI 1: DOWNLOAD EXCEL
+  // ==========================================
   const handleDownloadExcel = () => {
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.aoa_to_sheet(generateExcelData());
@@ -151,6 +157,59 @@ export default function PspPage() {
     ];
     XLSX.utils.book_append_sheet(wb, ws, "Formulir Identifikasi PSP");
     XLSX.writeFile(wb, `Formulir_Identifikasi_${meta.nama.replace(/\s+/g, '_') || 'PMV'}.xlsx`);
+  };
+
+  // ==========================================
+  // FUNGSI 2: KIRIM KE EMAIL (FORM SUBMIT)
+  // ==========================================
+  const handleSendEmail = async () => {
+    if (!meta.nama.trim() || !meta.kota.trim() || !meta.tanggal) {
+      alert('⚠ Harap lengkapi Nama PMV/C, Kab/Kota, dan Tanggal Identifikasi di bagian atas terlebih dahulu!');
+      if (topRef.current) topRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return; 
+    }
+
+    setIsSending(true);
+    setSendStatus(null);
+
+    try {
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.aoa_to_sheet(generateExcelData());
+      XLSX.utils.book_append_sheet(wb, ws, "Formulir Identifikasi PSP");
+      
+      const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      const fileName = `Formulir_Identifikasi_${meta.nama.replace(/\s+/g, '_')}.xlsx`;
+      
+      const file = new File([excelBuffer], fileName, { 
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
+      });
+
+      const formData = new FormData();
+      formData.append('Nama_PMVC', meta.nama);
+      formData.append('Kabupaten_Kota', meta.kota);
+      formData.append('Tanggal_Identifikasi', meta.tanggal);
+      formData.append('Status', stats.complete ? 'Complete' : 'Not complete');
+      formData.append('Hasil', stats.level);
+      formData.append('attachment', file); 
+
+      // GANTI EMAIL DI BAWAH INI DENGAN EMAIL TUJUAN ANDA
+      const response = await fetch('https://formsubmit.co/ajax/psdmsekberpmvbisumut@gmail.com', {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        setSendStatus({ type: 'success', msg: '✓ File Excel berhasil dikirim ke Email Panitia!' });
+      } else {
+        setSendStatus({ type: 'error', msg: 'Gagal mengirim email. Silakan coba lagi.' });
+      }
+    } catch (error) {
+      console.error(error);
+      setSendStatus({ type: 'error', msg: 'Terjadi kesalahan sistem saat mengirim.' });
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -296,7 +355,7 @@ export default function PspPage() {
               stats.complete ? (
                 <button type="button" className="psp-pagerBtn psp-pagerBtnPrimary"
                   onClick={() => setShowResult(true)}>
-                  Lihat Rekap & Download ›
+                  Lihat Rekap ›
                 </button>
               ) : (
                 <span className="psp-groupNavDone" style={{ color: '#F59E0B', background: 'rgba(245, 158, 11, 0.1)', borderColor: 'rgba(245, 158, 11, 0.25)' }}>
@@ -339,7 +398,7 @@ export default function PspPage() {
         </div>
       )}
 
-      {/* ---------- MODAL REKAP HASIL ---------- */}
+      {/* ---------- MODAL REKAP HASIL & TOMBOL AKSI ---------- */}
       {showResult && (
         <div className="psp-modalOverlay" onClick={() => setShowResult(false)}>
           <div className="psp-modal" onClick={e => e.stopPropagation()}>
@@ -350,7 +409,7 @@ export default function PspPage() {
             
             <div className="psp-modalBody">
               <div className="psp-alert psp-alertSuccess" style={{ marginBottom: 0 }}>
-                ✓ Semua butir telah dinilai. Berikut adalah rekap hasil identifikasi Anda.
+                ✓ Semua butir telah dinilai. Anda dapat mengunduh Excel atau langsung mengirimkannya ke Email Panitia.
               </div>
 
               <div className="psp-modalHighlight">
@@ -380,12 +439,34 @@ export default function PspPage() {
                   <span className="psp-dotNotExist" /> Not exist <b>{stats.notExist}</b>
                 </div>
               </div>
+
+              {/* Notifikasi Status Pengiriman */}
+              {sendStatus && (
+                <div style={{
+                  marginTop: '16px', padding: '12px', borderRadius: '8px', fontSize: '13px', fontWeight: 'bold',
+                  background: sendStatus.type === 'success' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                  color: sendStatus.type === 'success' ? '#10B981' : '#EF4444',
+                  border: `1px solid ${sendStatus.type === 'success' ? '#10B981' : '#EF4444'}`
+                }}>
+                  {sendStatus.msg}
+                </div>
+              )}
             </div>
 
-            <div className="psp-modalFooter">
-              <button className="psp-pagerBtn psp-pagerBtnPrimary" onClick={handleDownloadExcel}>
-                ⬇ Download Hasil (Excel)
+            <div className="psp-modalFooter" style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              <button className="psp-pagerBtn" onClick={handleDownloadExcel}>
+                ⬇ Download Excel
               </button>
+              
+              <button 
+                className="psp-pagerBtn psp-pagerBtnPrimary" 
+                onClick={handleSendEmail} 
+                disabled={isSending}
+                style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+              >
+                {isSending ? 'Mengirim...' : '✉ Kirim ke Email Panitia'}
+              </button>
+              
               <button className="psp-pagerBtn" onClick={() => setShowResult(false)}>
                 Tutup
               </button>
