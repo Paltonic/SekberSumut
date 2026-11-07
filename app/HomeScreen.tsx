@@ -197,7 +197,7 @@ export default function HomeScreen() {
           <div className="glass-card program-card">
             <div className="program-icon">🤝</div>
             <h3>Musyawarah & Temu Karya</h3>
-            <p>Wadah pengambilan keputusan dan silaturahmi melalui Musda, Munas, Mukerda, dan STKD.</p>
+            <p>Wadah pengambilan keputusan dan silaturahmi melalui Musda, Mukerda, dan STKD.</p>
           </div>
           <div className="glass-card program-card">
             <div className="program-icon">📚</div>
@@ -212,7 +212,7 @@ export default function HomeScreen() {
           <div className="glass-card program-card">
             <div className="program-icon">🎉</div>
             <h3>Event & Sosial</h3>
-            <p>Mempererat persaudaraan melalui Welcome Kalyanamitta, FlashMan, dan kegiatan bakti sosial.</p>
+            <p>Mempererat persaudaraan melalui Welcome Kalyanamitta dan Monthly Recharge.</p>
           </div>
         </div>
       </section>
