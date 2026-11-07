@@ -1,12 +1,9 @@
 'use client';
 
-import { useEffect, useMemo, useState, useRef } from 'react'; // <-- Tambah useRef
+import { useEffect, useMemo, useState, useRef } from 'react';
 import * as XLSX from 'xlsx';
 import './formpsp.css';
 import { GROUPS, ITEMS, MARK_META, STORAGE_KEY, type MarkKey } from '../../data/psp';
-
-// ⬇️ MASUKKAN NOMOR WHATSAPP TUJUAN DI SINI (Format: 628xxx)
-const NOMOR_WA = '6281234567890'; 
 
 const LEVEL_CLASS: Record<string, string> = {
   Hijau: 'levelHijau',
@@ -15,7 +12,6 @@ const LEVEL_CLASS: Record<string, string> = {
 };
 
 export default function PspPage() {
-  // Buat Ref untuk menandai paling atas halaman
   const topRef = useRef<HTMLDivElement>(null);
 
   const [marks, setMarks] = useState<Partial<Record<number, MarkKey>>>({});
@@ -24,11 +20,8 @@ export default function PspPage() {
   const [ready, setReady] = useState(false);
   const [currentGroup, setCurrentGroup] = useState(0);
   const [showResult, setShowResult] = useState(false);
-  
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isSending, setIsSending] = useState(false);
-  const [sendError, setSendError] = useState('');
 
+  // Load dari local storage
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
@@ -37,18 +30,18 @@ export default function PspPage() {
         setMarks(p.marks ?? {});
         setNotes(p.notes ?? {});
         setMeta({ nama: '', kota: '', tanggal: '', ...(p.meta ?? {}) });
-        setIsSubmitted(p.isSubmitted ?? false);
       }
     } catch {}
     setReady(true);
   }, []);
 
+  // Simpan ke local storage
   useEffect(() => {
     if (!ready) return;
     try { 
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ marks, notes, meta, isSubmitted })); 
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ marks, notes, meta })); 
     } catch {}
-  }, [marks, notes, meta, isSubmitted, ready]);
+  }, [marks, notes, meta, ready]);
 
   const stats = useMemo(() => {
     let good = 0, notGood = 0, notExist = 0, point = 0, filled = 0;
@@ -80,41 +73,30 @@ export default function PspPage() {
   const changePage = (idx: number) => {
     if (idx < 0 || idx >= totalGroups) return;
     setCurrentGroup(idx);
-    
-    // ⬇️ MENGGUNAKAN SCROLLINTOVIEW AGAR LEBIH AMPUH ⬇️
     if (topRef.current) {
       topRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
-  const handleDataChange = () => {
-    if (isSubmitted) setIsSubmitted(false);
-  };
-
   const setMark = (no: number, m: MarkKey) => {
     setMarks(p => ({ ...p, [no]: m }));
-    handleDataChange();
   };
   
   const clearMark = (no: number) => {
     setMarks(p => { const n = { ...p }; delete n[no]; return n; });
-    handleDataChange();
   };
 
   const handleNoteChange = (no: number, val: string) => {
     setNotes(p => ({ ...p, [no]: val }));
-    handleDataChange();
   };
 
   const handleMetaChange = (key: keyof typeof meta, val: string) => {
     setMeta(prev => ({ ...prev, [key]: val }));
-    handleDataChange();
   };
 
   const resetAll = () => {
     if (!confirm('Kosongkan seluruh penilaian dan keterangan?')) return;
     setMarks({}); setNotes({}); setShowResult(false);
-    setIsSubmitted(false); setSendError('');
   };
 
   const generateExcelData = () => {
@@ -171,81 +153,7 @@ export default function PspPage() {
     XLSX.writeFile(wb, `Formulir_Identifikasi_${meta.nama.replace(/\s+/g, '_') || 'PMV'}.xlsx`);
   };
 
-  const handleSendAndUnlock = async () => {
-    if (!meta.nama.trim() || !meta.kota.trim() || !meta.tanggal) {
-      setSendError('⚠ Harap lengkapi Nama PMV/C, Kab/Kota, dan Tanggal Identifikasi di bagian atas terlebih dahulu!');
-      if (topRef.current) {
-        topRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-      return; 
-    }
-
-    setIsSending(true);
-    setSendError('');
-
-    try {
-      const wb = XLSX.utils.book_new();
-      const ws = XLSX.utils.aoa_to_sheet(generateExcelData());
-      XLSX.utils.book_append_sheet(wb, ws, "Formulir Identifikasi PSP");
-      
-      const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-      const fileName = `Formulir_Identifikasi_${meta.nama.replace(/\s+/g, '_')}.xlsx`;
-      
-      const file = new File([excelBuffer], fileName, { 
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
-      });
-
-      const formData = new FormData();
-      formData.append('Nama_PMVC', meta.nama);
-      formData.append('Kabupaten_Kota', meta.kota);
-      formData.append('Tanggal_Identifikasi', meta.tanggal);
-      formData.append('Status', stats.complete ? 'Complete' : 'Not complete');
-      formData.append('Hasil', stats.level);
-      formData.append('attachment', file); 
-
-      const response = await fetch('https://formsubmit.co/ajax/psdmsekberpmvbisumut@gmail.com', {
-        method: 'POST',
-        body: formData,
-        headers: { 'Accept': 'application/json' }
-      });
-
-      if (response.ok) {
-        setIsSubmitted(true);
-        setShowResult(true);
-
-        const waMessage = 
-          `*HASIL IDENTIFIKASI PSP*\n` +
-          `================================\n` +
-          `*Nama PMV/C:* ${meta.nama}\n` +
-          `*Kab/Kota:* ${meta.kota}\n` +
-          `*Tanggal:* ${meta.tanggal}\n\n` +
-          `*Status Kelengkapan:* ${stats.complete ? 'Complete' : 'Not complete'}\n` +
-          `*Hasil Akhir:* ${stats.level} (${(stats.percent * 100).toFixed(1)}%)\n` +
-          `*Total Poin:* ${stats.point} / ${stats.maxPoint}\n\n` +
-          `*Rincian:*\n` +
-          `- Exist, Good: ${stats.good}\n` +
-          `- Exist, Not Good: ${stats.notGood}\n` +
-          `- Not Exist: ${stats.notExist}\n\n` +
-          `_(File Excel lengkap telah dikirim ke email panitia)_`;
-
-        const encodedMessage = encodeURIComponent(waMessage);
-        const waUrl = `https://wa.me/${NOMOR_WA}?text=${encodedMessage}`;
-        
-        window.open(waUrl, '_blank');
-
-      } else {
-        setSendError('Gagal mengirim email. Periksa koneksi internet Anda dan coba lagi.');
-      }
-    } catch (error) {
-      console.error(error);
-      setSendError('Terjadi kesalahan sistem saat mengirim. Coba lagi.');
-    } finally {
-      setIsSending(false);
-    }
-  };
-
   return (
-    // ⬇️ TAMBAHKAN REF DI SINI ⬇️
     <div ref={topRef} className={`psp-page ${stats.complete ? 'psp-page--complete' : ''}`}>
       {/* ---------- PAGE HEADER ---------- */}
       <div className="psp-pageHeader">
@@ -386,20 +294,10 @@ export default function PspPage() {
             </span>
             {isLast ? (
               stats.complete ? (
-                isSubmitted ? (
-                  <button type="button" className="psp-pagerBtn psp-pagerBtnPrimary"
-                    onClick={() => setShowResult(true)}>
-                    Lihat Rekap Hasil ›
-                  </button>
-                ) : (
-                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px' }}>
-                    <button type="button" className="psp-pagerBtn psp-pagerBtnPrimary psp-pulse"
-                      onClick={handleSendAndUnlock} disabled={isSending}>
-                      {isSending ? 'Memproses...' : 'Kirim & Lihat Hasil ›'}
-                    </button>
-                    {sendError && <span style={{color: '#EF4444', fontSize: '12px', maxWidth: '250px', textAlign: 'right'}}>{sendError}</span>}
-                  </div>
-                )
+                <button type="button" className="psp-pagerBtn psp-pagerBtnPrimary"
+                  onClick={() => setShowResult(true)}>
+                  Lihat Rekap & Download ›
+                </button>
               ) : (
                 <span className="psp-groupNavDone" style={{ color: '#F59E0B', background: 'rgba(245, 158, 11, 0.1)', borderColor: 'rgba(245, 158, 11, 0.25)' }}>
                   ⚠ Lengkapi dulu
@@ -421,31 +319,28 @@ export default function PspPage() {
           <div className="psp-dockInner">
             <div className="psp-progressRow">
               <div className="psp-progressTrack">
-                <div className="psp-progressFill" data-level={isSubmitted ? stats.level : 'Merah'}
-                  style={{ width: isSubmitted ? `${Math.min(stats.percent * 100, 100)}%` : '100%' }} />
+                <div className="psp-progressFill" data-level={stats.level}
+                  style={{ width: `${Math.min(stats.percent * 100, 100)}%` }} />
               </div>
               <span className="psp-percentText">
-                {isSubmitted ? `${(stats.percent * 100).toFixed(1)}%` : '?? %'}
+                {(stats.percent * 100).toFixed(1)}%
               </span>
-              <span className={`psp-levelBadge ${isSubmitted ? LEVEL_CLASS[stats.level] : 'psp-levelMerah'}`}>
-                {isSubmitted ? stats.level : 'Terkunci'}
+              <span className={`psp-levelBadge ${LEVEL_CLASS[stats.level]}`}>
+                {stats.level}
               </span>
             </div>
             <div className="psp-statRow">
-              <span className="psp-stat"><span className="psp-dotGood" /> Exist, good <b>{isSubmitted ? stats.good : '?'}</b></span>
-              <span className="psp-stat"><span className="psp-dotNotGood" /> Exist, not good <b>{isSubmitted ? stats.notGood : '?'}</b></span>
-              <span className="psp-stat"><span className="psp-dotNotExist" /> Not exist <b>{isSubmitted ? stats.notExist : '?'}</b></span>
-              <span className="psp-stat">Total Poin <b>{isSubmitted ? `${stats.point}/${stats.maxPoint}` : '?/?'}</b></span>
-              <span className={`psp-statusPill ${isSubmitted ? 'psp-statusDone' : 'psp-statusPending'}`}>
-                {isSubmitted ? 'Terkirim' : 'Belum Terkirim'}
-              </span>
+              <span className="psp-stat"><span className="psp-dotGood" /> Exist, good <b>{stats.good}</b></span>
+              <span className="psp-stat"><span className="psp-dotNotGood" /> Exist, not good <b>{stats.notGood}</b></span>
+              <span className="psp-stat"><span className="psp-dotNotExist" /> Not exist <b>{stats.notExist}</b></span>
+              <span className="psp-stat">Total Poin <b>{stats.point}/{stats.maxPoint}</b></span>
             </div>
           </div>
         </div>
       )}
 
       {/* ---------- MODAL REKAP HASIL ---------- */}
-      {showResult && isSubmitted && (
+      {showResult && (
         <div className="psp-modalOverlay" onClick={() => setShowResult(false)}>
           <div className="psp-modal" onClick={e => e.stopPropagation()}>
             <div className="psp-modalHeader">
@@ -455,7 +350,7 @@ export default function PspPage() {
             
             <div className="psp-modalBody">
               <div className="psp-alert psp-alertSuccess" style={{ marginBottom: 0 }}>
-                ✓ Jawaban dan File Excel berhasil dikirim ke Email. Tab WhatsApp juga telah dibuka untuk mengirim ringkasan.
+                ✓ Semua butir telah dinilai. Berikut adalah rekap hasil identifikasi Anda.
               </div>
 
               <div className="psp-modalHighlight">
@@ -488,10 +383,10 @@ export default function PspPage() {
             </div>
 
             <div className="psp-modalFooter">
-              <button className="psp-pagerBtn" onClick={handleDownloadExcel}>
-                ⬇ Download Salinan Excel
+              <button className="psp-pagerBtn psp-pagerBtnPrimary" onClick={handleDownloadExcel}>
+                ⬇ Download Hasil (Excel)
               </button>
-              <button className="psp-pagerBtn psp-pagerBtnPrimary" onClick={() => setShowResult(false)}>
+              <button className="psp-pagerBtn" onClick={() => setShowResult(false)}>
                 Tutup
               </button>
             </div>
