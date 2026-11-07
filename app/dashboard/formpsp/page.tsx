@@ -162,7 +162,7 @@ export default function PspPage() {
   // ==========================================
   // FUNGSI 2: KIRIM KE EMAIL (FORM SUBMIT)
   // ==========================================
-  const handleSendEmail = async () => {
+  const handleSendEmail = () => {
     if (!meta.nama.trim() || !meta.kota.trim() || !meta.tanggal) {
       alert('⚠ Harap lengkapi Nama PMV/C, Kab/Kota, dan Tanggal Identifikasi di bagian atas terlebih dahulu!');
       if (topRef.current) topRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -173,6 +173,7 @@ export default function PspPage() {
     setSendStatus(null);
 
     try {
+      // 1. Siapkan File Excel
       const wb = XLSX.utils.book_new();
       const ws = XLSX.utils.aoa_to_sheet(generateExcelData());
       XLSX.utils.book_append_sheet(wb, ws, "Formulir Identifikasi PSP");
@@ -184,32 +185,51 @@ export default function PspPage() {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
       });
 
-      const formData = new FormData();
-      formData.append('Nama_PMVC', meta.nama);
-      formData.append('Kabupaten_Kota', meta.kota);
-      formData.append('Tanggal_Identifikasi', meta.tanggal);
-      formData.append('Status', stats.complete ? 'Complete' : 'Not complete');
-      formData.append('Hasil', stats.level);
-      formData.append('attachment', file); 
+      // 2. Buat elemen Form HTML secara dinamis
+      const form = document.createElement('form');
+      form.action = 'https://formsubmit.co/psdmsekberpmvbisumut@gmail.com'; // Tanpa /ajax/
+      form.method = 'POST';
+      form.enctype = 'multipart/form-data';
+      form.style.display = 'none';
 
-      // GANTI EMAIL DI BAWAH INI DENGAN EMAIL TUJUAN ANDA
-      const response = await fetch('https://formsubmit.co/ajax/psdmsekberpmvbisumut@gmail.com', {
-        method: 'POST',
-        body: formData,
-        headers: { 
-          'Accept': 'application/json' 
-        }
+      // 3. Tambahkan data teks
+      const fields = {
+        _subject: `PSP Baru: ${meta.nama}`,
+        _next: window.location.href, // Mengembalikan user ke halaman ini setelah sukses
+        _captcha: 'false', // Mematikan captcha jika tidak diperlukan
+        Nama_PMVC: meta.nama,
+        Kabupaten_Kota: meta.kota,
+        Tanggal_Identifikasi: meta.tanggal,
+        Status: stats.complete ? 'Complete' : 'Not complete',
+        Hasil: stats.level
+      };
+
+      Object.keys(fields).forEach(key => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = fields[key as keyof typeof fields];
+        form.appendChild(input);
       });
 
-      if (response.ok) {
-        setSendStatus({ type: 'success', msg: '✓ File Excel berhasil dikirim ke Email Panitia!' });
-      } else {
-        setSendStatus({ type: 'error', msg: 'Gagal mengirim email. Silakan coba lagi.' });
-      }
+      // 4. Sisipkan File Excel ke dalam Form
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.name = 'attachment';
+      
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      fileInput.files = dt.files;
+      
+      form.appendChild(fileInput);
+
+      // 5. Kirim Form (Halaman akan berpindah sebentar ke FormSubmit lalu kembali)
+      document.body.appendChild(form);
+      form.submit();
+
     } catch (error) {
       console.error(error);
-      setSendStatus({ type: 'error', msg: 'Terjadi kesalahan sistem saat mengirim.' });
-    } finally {
+      setSendStatus({ type: 'error', msg: 'Terjadi kesalahan sistem saat menyiapkan pengiriman.' });
       setIsSending(false);
     }
   };
