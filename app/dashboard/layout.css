@@ -19,6 +19,14 @@
   flex-direction: column;
 }
 
+.nav-brand-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3px;
+  line-height: 1;
+}
+
 .dashboard-container *,
 .dashboard-container *::before,
 .dashboard-container *::after {
