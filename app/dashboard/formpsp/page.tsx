@@ -196,7 +196,9 @@ export default function PspPage() {
       const response = await fetch('https://formsubmit.co/ajax/psdmsekberpmvbisumut@gmail.com', {
         method: 'POST',
         body: formData,
-        headers: { 'Accept': 'application/json' }
+        headers: { 
+          'Accept': 'application/json' 
+        }
       });
 
       if (response.ok) {
