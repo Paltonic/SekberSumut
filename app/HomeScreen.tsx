@@ -6,8 +6,8 @@ import Link from 'next/link'
 import logoImg from './assets/sekber_logo.png'
 import mascotImg from './assets/mascoot.png' 
 
-const APP_VERSION = 'v1.1.1'
-const APP_CREDIT = '© 2026 Frederick Liko. All rights reserved.'
+const APP_VERSION = 'v1.1.2'
+const APP_CREDIT = '© 2026 FLik FLip. All rights reserved.'
 
 // Pastikan Anda sudah meng-import gambar Anda di sini
 import bg1 from './assets/carousel1.png';

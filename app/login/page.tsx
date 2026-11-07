@@ -88,7 +88,7 @@ export default function LoginPage() {
         <div className="login-left-overlay"></div>
         <div className="login-left-content">
           <h1>Halo!</h1>
-          <p>Selamat Datang di Portal SEKBER PMVBI (pemuda buddhayana) Provinsi Sumatera Utara</p>
+          <p>Selamat Datang di Portal Sekber PMVBI (Pemuda Buddhayana) Provinsi Sumatera Utara</p>
           <div className="login-accent-line"></div>
         </div>
       </div>
@@ -130,7 +130,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="input-field"
-                  placeholder="••••••••"
+                  placeholder="Masukkan Password"
                 />
                 <button
                   type="button"

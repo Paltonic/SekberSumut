@@ -58,6 +58,32 @@ const ROLE_META: Record<UserRole, { label: string; color: string; Icon: any }> =
   member:   { label: 'Anggota',  color: '#94A3B8', Icon: Users },
 };
 
+// ================= FUNGSI PINTAR UNTUK GAMBAR (GOOGLE DRIVE) =================
+function getAvatarSrc(url?: string) {
+  if (!url) return '';
+  
+  let fileId = '';
+
+  if (url.includes('drive.google.com')) {
+    const matchD = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    const matchId = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    
+    if (matchD && matchD[1]) fileId = matchD[1];
+    else if (matchId && matchId[1]) fileId = matchId[1];
+  } 
+  else if (!url.startsWith('http')) {
+    fileId = url;
+  } else {
+    return url;
+  }
+
+  if (fileId) {
+    return `https://drive.google.com/thumbnail?id=${fileId}&sz=w500`;
+  }
+
+  return url;
+}
+
 // ================= RESOLVE ROLE =================
 function resolveRole(username?: string): UserRole {
   const u = (username || '').trim();
@@ -71,7 +97,6 @@ function resolveRole(username?: string): UserRole {
 // ================= RESOLVE JABATAN =================
 function resolveJabatan(username: string | undefined, role: UserRole): string {
   const u = (username || '').trim();
-  // Jika tidak ada di list, pakai label default role (misal: 'PMV/C')
   return JABATAN_BY_USERNAME[u] || ROLE_META[role].label;
 }
 
@@ -80,6 +105,7 @@ export default function DashboardPage() {
   const role = resolveRole(username);
   const jabatan = resolveJabatan(username, role);
   const isAdmin = role === 'admin';
+  const isPengurus = role === 'pengurus'; // <-- Tambahan pengecekan khusus
 
   // ================= STATE KALENDER & WAKTU =================
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
@@ -217,13 +243,10 @@ export default function DashboardPage() {
         <div className="card welcome-card">
           <div className="welcome-text">
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-              {/* Teks "Hai" pakai Nama/Username */}
               <h1 style={{ margin: 0 }}>Hai, {username || 'User'}</h1>
-              {/* Badge biru pakai Jabatan */}
               {jabatanBadge}
             </div>
             
-            {/* Kata sambutan hangat tanpa menyebut hak akses */}
             <p style={{ marginTop: 12, lineHeight: 1.6 }}>
               {role === 'admin' ? (
                 <>Selamat datang kembali, Administrator! Semoga harimu menyenangkan dan diberikan kelancaran dalam mengelola dan memajukan <b>Sekber PMVBI (pemuda buddhayana) Sumatera Utara</b>.</>
@@ -427,10 +450,33 @@ export default function DashboardPage() {
             Profil <a href="#"><ExternalLink size={12} /> Detail</a>
           </h2>
           <div className="profile-info">
+            {/* FOTO PROFIL KONDISIONAL: Pengurus = Bulat, Lainnya = Petak */}
             {profile?.avatarUrl ? (
-              <img src={profile.avatarUrl} alt="Profile" className="profile-img" />
+              <img 
+                src={getAvatarSrc(profile.avatarUrl)} 
+                alt="Profile" 
+                className="profile-img" 
+                referrerPolicy="no-referrer" 
+                style={{ 
+                  width: '120px', 
+                  height: '120px', 
+                  borderRadius: isPengurus ? '50%' : '0px', // <-- Logika bentuk di sini
+                  objectFit: 'cover',
+                  display: 'block',
+                  margin: '0 auto'
+                }}
+              />
             ) : (
-              <div className="profile-img" style={{ background: '#334155' }} />
+              <div 
+                className="profile-img" 
+                style={{ 
+                  background: '#334155',
+                  width: '120px', 
+                  height: '120px', 
+                  borderRadius: isPengurus ? '50%' : '0px', // <-- Logika bentuk di sini
+                  margin: '0 auto'
+                }} 
+              />
             )}
 
             <h3 className="profile-name">{username || 'User'}</h3>
@@ -443,7 +489,7 @@ export default function DashboardPage() {
               className="status-grid"
               style={{
                 marginTop: 12,
-                ...(role === 'pengurus' ? { gridTemplateColumns: '1fr' } : {})
+                ...(isPengurus ? { gridTemplateColumns: '1fr' } : {})
               }}
             >
               <div className="status-item">
@@ -454,7 +500,7 @@ export default function DashboardPage() {
                 </span>
               </div>
 
-              {role !== 'pengurus' && (
+              {!isPengurus && (
                 <div className="status-item">
                   <p>Status PSP</p>
                   <span className={`status-value ${profile?.isPspActive ? 'green' : 'red'}`}>
@@ -486,30 +532,14 @@ export default function DashboardPage() {
             <h2 className="section-title">
               Ringkasan PMV <a href="#"><ExternalLink size={12} /> Detail</a>
             </h2>
-            <p style={{ fontSize: 14, color: '#94A3B8' }}>
-              Total kegiatan PMV: <b style={{ color: '#3B82F6' }}>
-                {events.filter(e => (e.division || 'all') === 'pmv').length}
-              </b>
-            </p>
-            <p style={{ fontSize: 13, color: '#64748B', marginTop: 8 }}>
-              Tetap semangat dan jaga kekompakan di divisi PMV/C!
-            </p>
           </div>
         )}
 
-        {role === 'pengurus' && (
+        {isPengurus && (
           <div className="card">
             <h2 className="section-title">
               Ringkasan Kepengurusan <a href="#"><ExternalLink size={12} /> Detail</a>
             </h2>
-            <p style={{ fontSize: 14, color: '#94A3B8' }}>
-              Total kegiatan Pengurus: <b style={{ color: '#8B5CF6' }}>
-                {events.filter(e => (e.division || 'all') === 'pengurus').length}
-              </b>
-            </p>
-            <p style={{ fontSize: 13, color: '#64748B', marginTop: 8 }}>
-              Teruslah berkarya dan mengabdi untuk kepengurusan yang lebih baik.
-            </p>
           </div>
         )}
 

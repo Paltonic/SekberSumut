@@ -25,27 +25,27 @@ const userProfiles: Record<string, any> = {
   'PMBE': {
     major: 'PMB Ehipassiko', divisi: 'Anggota Biasa',
     status: 'Tidak Aktif', isActive: true, pspStatus: 'Selesai', isPspActive: true,
-    avatarUrl: logoPMBE.src,
+    avatarUrl: 'https://drive.google.com/file/d/1e7sKgaE_O3AHTk4d3gmPw-Jqr21ECGtE/view?usp=drive_link',
   },
   'PMVDA': {
     major: 'PMV Dharma Aura', divisi: 'Divisi Humas',
     status: 'Aktif', isActive: true, pspStatus: 'Selesai', isPspActive: true,
-    avatarUrl: 'https://i.pravatar.cc/150?img=13',
+    avatarUrl: 'https://drive.google.com/file/d/1xMkbFkiPsh5G6O29QxHaurB532heqHu6/view?usp=drive_link',
   },
   'PMVMAS': {
     major: 'PMV Maha Aura Sala', divisi: 'Anggota Biasa',
     status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
-    avatarUrl: 'https://i.pravatar.cc/150?img=13',
+    avatarUrl: 'https://drive.google.com/file/d/1SEJ7O1SyX3G11u4BG7-7kH8QSzJFEfOP/view?usp=drive_link',
   },
   'Ricky Martin' : {
     major: 'Sekber PMVBI Sumut', divisi: 'Sekretaris Provinsi',
     status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
-    avatarUrl: 'https://i.pravatar.cc/150?img=13',
+    avatarUrl: 'https://drive.google.com/file/d/1ZUvHHepub0A4m_lah9y0iz-cTWICUe1S/view?usp=drive_link',
   },
   'Felicia Livana' : {
     major: 'Sekber PMVBI Sumut', divisi: 'Wakil Sekretaris Provinsi III',
     status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
-    avatarUrl: 'https://i.pravatar.cc/150?img=13',
+    avatarUrl: 'https://drive.google.com/file/d/1OdmiH1ptY8qv_-ymGlqNO-z4N9tDopqa/view?usp=drive_link',
   },
 };
 
