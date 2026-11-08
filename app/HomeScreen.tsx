@@ -82,8 +82,8 @@ export default function HomeScreen() {
 
           <nav className="nav-links">
             <a href="#beranda">Home</a>
-            <a href="#program">Program</a>
-            <a href="#divisi">Divisi</a>
+            <a href="#program">Programme</a>
+            <a href="#divisi">Division</a>
             <a href="#tentang">About</a>
             <a href="#kontak">Contact</a>
           </nav>
@@ -108,8 +108,8 @@ export default function HomeScreen() {
           {isMenuOpen && (
             <div className="mobile-menu">
               <a href="#beranda" onClick={() => setIsMenuOpen(false)}>Home</a>
-              <a href="#program" onClick={() => setIsMenuOpen(false)}>Program</a>
-              <a href="#divisi" onClick={() => setIsMenuOpen(false)}>Divisi</a>
+              <a href="#program" onClick={() => setIsMenuOpen(false)}>Programme</a>
+              <a href="#divisi" onClick={() => setIsMenuOpen(false)}>Division</a>
               <a href="#tentang" onClick={() => setIsMenuOpen(false)}>About</a>
               <a href="#kontak" onClick={() => setIsMenuOpen(false)}>Contact</a>
               
@@ -474,9 +474,9 @@ export default function HomeScreen() {
               <h4 className="footer-heading">Tautan Cepat</h4>
               <ul className="footer-list">
                 <li><a href="#beranda">Beranda</a></li>
-                <li><a href="#tentang">Tentang Kami</a></li>
                 <li><a href="#program">Program</a></li>
                 <li><a href="#divisi">Divisi</a></li>
+                <li><a href="#tentang">Tentang Kami</a></li>
                 <li><a href="#kontak">Kontak</a></li>
               </ul>
             </div>
