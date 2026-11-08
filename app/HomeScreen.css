@@ -636,6 +636,8 @@ a {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  align-items: center; 
+  text-align: center;
   gap: 0.65rem;
   padding: 1.5rem 1.25rem;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
