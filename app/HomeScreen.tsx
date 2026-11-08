@@ -351,7 +351,7 @@ export default function HomeScreen() {
         <div className="glass-card contact-card">
           <div className="contact-item">
             <span className="contact-label">Email</span>
-            <span className="contact-value">sekretariatsekberpmvbisumut@gmail.com</span>
+            <span className="contact-value">psdmsekberpmvbisumut@gmail.com</span>
           </div>
           <div className="contact-item">
             <span className="contact-label">Instagram</span>
@@ -359,11 +359,11 @@ export default function HomeScreen() {
           </div>
           <div className="contact-item">
             <span className="contact-label">Telepon</span>
-            <span className="contact-value">+62 821-6576-0993</span>
+            <span className="contact-value">(061) 4555586</span>
           </div>
           <div className="contact-item">
             <span className="contact-label">Alamat</span>
-            <span className="contact-value">Medan, Sumatra Utara</span>
+            <span className="contact-value">Buddhayana Center, Jl. Bambu II Kompleks Graha Niaga Blok A2, Medan 20235</span>
           </div>
         </div>
       </section>

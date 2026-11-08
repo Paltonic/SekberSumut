@@ -691,17 +691,19 @@ a {
    ============================================================ */
 .contact-card {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); 
-  gap: 24px;
-  max-width: 900px;
+  /* Ubah bagian ini untuk membuat 2 kolom */
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 30px; /* Sedikit dilebarkan agar rapi */
+  max-width: 800px; /* Bisa disesuaikan ukurannya */
   margin: 0 auto;
 }
 
 .contact-item {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   text-align: center;
+  padding: 10px;
 }
 
 .contact-label {
@@ -720,8 +722,19 @@ a {
   overflow-wrap: break-word;
 }
 
+/* Hapus atau matikan baris ini agar "Alamat" tidak memanjang penuh */
+/*
 .contact-card .contact-item:last-child {
   grid-column: 1 / -1; 
+}
+*/
+
+/* Tambahkan pengaturan agar di HP menjadi 1 kolom */
+@media (max-width: 640px) {
+  .contact-card {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
 }
 
 /* ============================================================
