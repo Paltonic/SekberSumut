@@ -311,7 +311,7 @@ export default function HomeScreen() {
         <div className="about-grid">
           <div className="glass-card about-text">
             <p style={{ marginBottom: '1.5rem' }}>
-              <strong>SEKBER PMVBI</strong> (Sekretariat Bersama Persaudaraan Muda-mudi Vihara-vihara Buddhayana Indonesia) adalah wadah persatuan berbentuk konfederasi dari PMV/C/B se-Indonesia. Dibentuk oleh dan beranggotakan PMV/C/B, bertujuan menumbuhkembangkan dan memberdayakan pemuda Buddhayana Indonesia yang peduli dan kompeten.
+              <strong>SEKBER PMVBI</strong> (Sekretariat Bersama Persaudaraan Muda-mudi Vihara-vihara Buddhayana Indonesia) / Perkumpulan Pemuda Buddhayana Indonesia adalah wadah persatuan dan kesatuan yang mengkoordinasi Pemuda-pemudi Buddhis yang tergabung dalam Persaudaraan Muda-Mudi Vihara atau Cetiya Buddhayana di seluruh Indonesia. Mempunyai maksud dan tujuan di bidang sosial keagamaan.
             </p>
             
             <h4 style={{ color: 'var(--accent, #22c55e)', marginBottom: '0.5rem', fontWeight: 'bold' }}>Visi</h4>
