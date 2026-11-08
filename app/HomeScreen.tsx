@@ -326,7 +326,7 @@ export default function HomeScreen() {
           </div>
           <div className="glass-card about-stats">
             <div className="stat-item">
-              <span className="stat-value">40+</span>
+              <span className="stat-value">45+</span>
               <span className="stat-label">Tahun Berkarya</span>
             </div>
             <div className="stat-item">
