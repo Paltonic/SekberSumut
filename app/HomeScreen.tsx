@@ -83,7 +83,7 @@ export default function HomeScreen() {
           <nav className="nav-links">
             <a href="#beranda">Home</a>
             <a href="#program">Program</a>
-            <a href="divisi">Divisi</a>
+            <a href="#divisi">Divisi</a>
             <a href="#tentang">About</a>
             <a href="#kontak">Contact</a>
           </nav>
@@ -476,19 +476,19 @@ export default function HomeScreen() {
                 <li><a href="#beranda">Beranda</a></li>
                 <li><a href="#tentang">Tentang Kami</a></li>
                 <li><a href="#program">Program</a></li>
+                <li><a href="#divisi">Divisi</a></li>
                 <li><a href="#kontak">Kontak</a></li>
-                <li><a href="#">Pendaftaran</a></li>
               </ul>
             </div>
 
             <div className="footer-col">
-              <h4 className="footer-heading">Divisi</h4>
+              <h4 className="footer-heading">Program</h4>
               <ul className="footer-list">
-                <li><a href="#">Pengembangan Spiritual</a></li>
-                <li><a href="#">Sosial &amp; Kemanusiaan</a></li>
-                <li><a href="#">Seni &amp; Budaya</a></li>
-                <li><a href="#">Olahraga &amp; Rekreasi</a></li>
-                <li><a href="#">Media &amp; Publikasi</a></li>
+                <li><a href="#">Sarasehan &amp; Temu Karya Daerah</a></li>
+                <li><a href="#">Musyawarah Kerja Daerah &amp; Pelatihan Daerah</a></li>
+                <li><a href="#">Musyawarah Daerah</a></li>
+                <li><a href="#">Bina Widya</a></li>
+                <li><a href="#">Dhamma Vidya</a></li>
               </ul>
             </div>
 

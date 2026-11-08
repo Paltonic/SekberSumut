@@ -625,13 +625,14 @@ a {
 }
 
 /* ===== Divisi: 4 x 2 ===== */
-#divisi .program-grid {
+/* ===== Divisi: 4 x 2 ===== */
+#divisi .divisi-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1.25rem;
 }
 
-#divisi .program-card {
+#divisi .divisi-card {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -640,43 +641,45 @@ a {
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-#divisi .program-card:hover {
+#divisi .divisi-card:hover {
   transform: translateY(-4px);
 }
 
-#divisi .program-card h3 {
+#divisi .divisi-card h3 {
   font-size: 1rem;
   line-height: 1.35;
   margin: 0;
+  color: var(--primary-yellow);
 }
 
-#divisi .program-card p {
+#divisi .divisi-card p {
   font-size: 0.875rem;
   line-height: 1.55;
   margin: 0;
   opacity: 0.85;
+  color: var(--text-dim);
 }
 
-#divisi .program-icon {
+#divisi .divisi-icon {
   font-size: 1.75rem;
   line-height: 1;
 }
 
 /* Tablet: 2 kolom */
 @media (max-width: 1024px) {
-  #divisi .program-grid {
+  #divisi .divisi-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 /* Mobile: 1 kolom */
 @media (max-width: 640px) {
-  #divisi .program-grid {
+  #divisi .divisi-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
 
-  #divisi .program-card {
+  #divisi .divisi-card {
     padding: 1.25rem 1.1rem;
   }
 }
