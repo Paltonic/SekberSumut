@@ -330,12 +330,12 @@ export default function HomeScreen() {
               <span className="stat-label">Tahun Berkarya</span>
             </div>
             <div className="stat-item">
-              <span className="stat-value">60+</span>
+              <span className="stat-value">40+</span>
               <span className="stat-label">PMV/C/B Anggota</span>
             </div>
             <div className="stat-item">
               <span className="stat-value">50+</span>
-              <span className="stat-label">Program / Tahun</span>
+              <span className="stat-label">Program </span>
             </div>
           </div>
         </div>
