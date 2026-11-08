@@ -624,6 +624,63 @@ a {
   line-height: 1.55;
 }
 
+/* ===== Divisi: 4 x 2 ===== */
+#divisi .program-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+#divisi .program-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 1.5rem 1.25rem;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+#divisi .program-card:hover {
+  transform: translateY(-4px);
+}
+
+#divisi .program-card h3 {
+  font-size: 1rem;
+  line-height: 1.35;
+  margin: 0;
+}
+
+#divisi .program-card p {
+  font-size: 0.875rem;
+  line-height: 1.55;
+  margin: 0;
+  opacity: 0.85;
+}
+
+#divisi .program-icon {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+/* Tablet: 2 kolom */
+@media (max-width: 1024px) {
+  #divisi .program-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Mobile: 1 kolom */
+@media (max-width: 640px) {
+  #divisi .program-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  #divisi .program-card {
+    padding: 1.25rem 1.1rem;
+  }
+}
+
 /* ============================================================
    KONTAK SECTION
    ============================================================ */

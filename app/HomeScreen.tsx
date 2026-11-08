@@ -6,7 +6,7 @@ import Link from 'next/link'
 import logoImg from './assets/sekber_logo.png'
 import mascotImg from './assets/mascoot.png' 
 
-const APP_VERSION = 'v1.1.2'
+const APP_VERSION = 'v1.1.3'
 const APP_CREDIT = '© 2026 FLik FLip. All rights reserved.'
 
 // Pastikan Anda sudah meng-import gambar Anda di sini
@@ -83,6 +83,7 @@ export default function HomeScreen() {
           <nav className="nav-links">
             <a href="#beranda">Home</a>
             <a href="#program">Program</a>
+            <a href="divisi">Divisi</a>
             <a href="#tentang">About</a>
             <a href="#kontak">Contact</a>
           </nav>
@@ -108,6 +109,7 @@ export default function HomeScreen() {
             <div className="mobile-menu">
               <a href="#beranda" onClick={() => setIsMenuOpen(false)}>Home</a>
               <a href="#program" onClick={() => setIsMenuOpen(false)}>Program</a>
+              <a href="#divisi" onClick={() => setIsMenuOpen(false)}>Divisi</a>
               <a href="#tentang" onClick={() => setIsMenuOpen(false)}>About</a>
               <a href="#kontak" onClick={() => setIsMenuOpen(false)}>Contact</a>
               
@@ -186,11 +188,11 @@ export default function HomeScreen() {
         </div>
       </section>
 
-      {/* PROGRAM & DIVISI */}
+      {/* PROGRAM */}
       <section id="program" className="section">
         <div className="section-header">
           <span className="section-label">Kegiatan</span>
-          <h2 className="section-title">Program & Divisi</h2>
+          <h2 className="section-title">Program</h2>
         </div>
 
         <div className="program-grid">
@@ -213,6 +215,88 @@ export default function HomeScreen() {
             <div className="program-icon">🎉</div>
             <h3>Event & Sosial</h3>
             <p>Mempererat persaudaraan melalui Welcome Kalyanamitta dan Monthly Recharge.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* DIVISI */}
+      <section id="divisi" className="section">
+        <div className="section-header">
+          <span className="section-label">Pengurus</span>
+          <h2 className="section-title">Divisi</h2>
+        </div>
+
+        <div className="divisi-grid">
+          <div className="glass-card divisi-card">
+            <div className="divisi-icon">📝</div>
+            <h3>Sekretaris Provinsi & Wakil</h3>
+            <p>
+              Mengelola administrasi organisasi, surat-menyurat, arsip, dan
+              koordinasi kesekretariatan tingkat provinsi.
+            </p>
+          </div>
+
+          <div className="glass-card divisi-card">
+            <div className="divisi-icon">🗂️</div>
+            <h3>Seksi Kesekretariatan</h3>
+            <p>
+              Mendukung tugas sekretariat dalam pengelolaan dokumen, notulen
+              rapat, dan administrasi harian.
+            </p>
+          </div>
+
+          <div className="glass-card divisi-card">
+            <div className="divisi-icon">💰</div>
+            <h3>Seksi Keuangan</h3>
+            <p>
+              Mengelola anggaran, pembukuan, laporan keuangan, dan transparansi
+              keuangan organisasi.
+            </p>
+          </div>
+
+          <div className="glass-card divisi-card">
+            <div className="divisi-icon">📚</div>
+            <h3>Seksi Pengembangan SDM</h3>
+            <p>
+              Peningkatan kapasitas anggota melalui pelatihan, kaderisasi, dan
+              pengembangan kompetensi pemuda.
+            </p>
+          </div>
+
+          <div className="glass-card divisi-card">
+            <div className="divisi-icon">🧘</div>
+            <h3>Seksi Pelayanan Dharma</h3>
+            <p>
+              Pembinaan spiritual, kegiatan keagamaan, dan pelayanan dharma bagi
+              anggota serta masyarakat.
+            </p>
+          </div>
+
+          <div className="glass-card divisi-card">
+            <div className="divisi-icon">🤝</div>
+            <h3>Seksi Kemitraan</h3>
+            <p>
+              Menjalin kerja sama dengan lembaga, organisasi, dan mitra strategis
+              untuk mendukung program kerja.
+            </p>
+          </div>
+
+          <div className="glass-card divisi-card">
+            <div className="divisi-icon">📸</div>
+            <h3>Seksi Publikasi & Dokumentasi</h3>
+            <p>
+              Mengelola media sosial, konten, dan dokumentasi seluruh kegiatan
+              organisasi.
+            </p>
+          </div>
+
+          <div className="glass-card divisi-card">
+            <div className="divisi-icon">🏛️</div>
+            <h3>DPD IPGABI Sumut</h3>
+            <p>
+              Dewan Pimpinan Daerah Ikatan Pemuda GABI Sumatera Utara —
+              koordinasi dan pembinaan pemuda Buddhayana tingkat daerah.
+            </p>
           </div>
         </div>
       </section>
