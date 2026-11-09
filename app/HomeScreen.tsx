@@ -351,6 +351,7 @@ export default function HomeScreen() {
         <div className="glass-card contact-card">
           <div className="contact-item">
             <span className="contact-label">Email</span>
+            <span className="contact-value">sekretariatsekberpmvbisumut@gmail.com</span>
             <span className="contact-value">psdmsekberpmvbisumut@gmail.com</span>
           </div>
           <div className="contact-item">
