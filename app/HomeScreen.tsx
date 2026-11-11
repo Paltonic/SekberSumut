@@ -231,8 +231,7 @@ export default function HomeScreen() {
             <div className="divisi-icon">📝</div>
             <h3>Sekretaris Provinsi & Wakil</h3>
             <p>
-              Mengelola administrasi organisasi, surat-menyurat, arsip, dan
-              koordinasi kesekretariatan tingkat provinsi.
+              Memimpin dan merencanakan keputusan strategis organisasi, membimbing Seksi, serta menjalin hubungan baik dengan PMV/C/B dan internal/eksternal Keluarga Buddhayana Indonesia.
             </p>
           </div>
 
@@ -240,8 +239,7 @@ export default function HomeScreen() {
             <div className="divisi-icon">🗂️</div>
             <h3>Seksi Kesekretariatan</h3>
             <p>
-              Mendukung tugas sekretariat dalam pengelolaan dokumen, notulen
-              rapat, dan administrasi harian.
+              Mengendalikan administrasi, pengelolaan surat/dokumen, notulen rapat, inventaris, pembaharuan data PMV/C/B secara berkala, serta pengarsipan dokumen penting organisasi.
             </p>
           </div>
 
@@ -249,8 +247,7 @@ export default function HomeScreen() {
             <div className="divisi-icon">💰</div>
             <h3>Seksi Keuangan</h3>
             <p>
-              Mengelola anggaran, pembukuan, laporan keuangan, dan transparansi
-              keuangan organisasi.
+              Mengendalikan sistem dan prosedur keuangan, pencatatan jurnal, penyusunan laporan keuangan tahunan, audit internal, serta pengelolaan arus kas masuk dan keluar organisasi.
             </p>
           </div>
 
@@ -258,8 +255,7 @@ export default function HomeScreen() {
             <div className="divisi-icon">📚</div>
             <h3>Seksi Pengembangan SDM</h3>
             <p>
-              Peningkatan kapasitas anggota melalui pelatihan, kaderisasi, dan
-              pengembangan kompetensi pemuda.
+              Menganalisis kebutuhan dan mengadakan program pengembangan kualitas diri anggota di bidang pendidikan dan soft skill, seperti workshop karakter dan Monthly Recharge.
             </p>
           </div>
 
@@ -267,8 +263,7 @@ export default function HomeScreen() {
             <div className="divisi-icon">🧘</div>
             <h3>Seksi Pelayanan Dharma</h3>
             <p>
-              Pembinaan spiritual, kegiatan keagamaan, dan pelayanan dharma bagi
-              anggota serta masyarakat.
+              Mengoordinasikan kegiatan pelatihan spiritual dan penyebaran Dharma, seperti Kedai Dharma, Dharma Insight, Retret Hidup Berkesadaran, serta pelayanan kepada anggota Sangha.
             </p>
           </div>
 
@@ -276,17 +271,15 @@ export default function HomeScreen() {
             <div className="divisi-icon">🤝</div>
             <h3>Seksi Kemitraan</h3>
             <p>
-              Menjalin kerja sama dengan lembaga, organisasi, dan mitra strategis
-              untuk mendukung program kerja.
+              Mempererat tali persahabatan melalui kegiatan keakraban, mendukung alumni dan calon mahasiswa (Welcome Kalyanamitta), serta memberdayakan pemuda di bidang seni dan budaya.
             </p>
           </div>
 
           <div className="glass-card divisi-card">
             <div className="divisi-icon">📸</div>
-            <h3>Seksi Publikasi & Dokumentasi</h3>
+            <h3>Seksi Media Komunikasi</h3>
             <p>
-              Mengelola media sosial, konten, dan dokumentasi seluruh kegiatan
-              organisasi.
+              Mengelola dan memaksimalkan media sosial untuk penyebaran informasi dan Dharma, membuat poster/video kegiatan, serta mendokumentasikan seluruh aktivitas organisasi.
             </p>
           </div>
 
@@ -294,8 +287,7 @@ export default function HomeScreen() {
             <div className="divisi-icon">🏛️</div>
             <h3>DPD IPGABI Sumut</h3>
             <p>
-              Dewan Pimpinan Daerah Ikatan Pemuda GABI Sumatera Utara —
-              koordinasi dan pembinaan pemuda Buddhayana tingkat daerah.
+              Dewan Pimpinan Daerah Ikatan Pembina Gelanggang Anak-anak Buddhis Indonesia — Mengoordinasikan pembinaan GABI di PMV/C/B melalui pelatihan (ToT), Gathering, dan Dharmma Vidya.
             </p>
           </div>
         </div>
