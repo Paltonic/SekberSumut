@@ -392,7 +392,7 @@ export default function HomeScreen() {
 
               <div className="footer-social">
                 <a
-                  href="https://www.instagram.com/sekberpmvbi"
+                  href="https://www.instagram.com/sekberpmvbisumut"
                   aria-label="Instagram"
                   className="social-btn"
                   target="_blank"
@@ -414,7 +414,7 @@ export default function HomeScreen() {
                 </a>
 
                 <a
-                  href="https://web.facebook.com/pemudabuddhayana"
+                  href="https://www.facebook.com/sekberpmvbisumut"
                   aria-label="Facebook"
                   className="social-btn"
                   target="_blank"
@@ -454,7 +454,7 @@ export default function HomeScreen() {
                   </svg>
                 </a>
                 <a
-                  href="https://tiktok.com/@sekberpmvbi?is_from_webapp=1&sender_device=pc"
+                  href="https://tiktok.com/@sekberpmvbisumut?is_from_webapp=1&sender_device=pc"
                   aria-label="TikTok"
                   className="social-btn"
                   target="_blank"
