@@ -287,7 +287,7 @@ export default function HomeScreen() {
             <div className="divisi-icon">🏛️</div>
             <h3>DPD IPGABI Sumut</h3>
             <p>
-              Dewan Pimpinan Daerah Ikatan Pembina Gelanggang Anak-anak Buddhis Indonesia — Mengoordinasikan pembinaan GABI di PMV/C/B melalui pelatihan (ToT), Gathering, dan Dharmma Vidya.
+              Dewan Pimpinan Daerah Ikatan Pembina Gelanggang Anak-anak Buddhis Indonesia dengan mengoordinasikan pembinaan GABI di PMV/C/B melalui pelatihan (ToT), Gathering, dan Dharmma Vidya.
             </p>
           </div>
         </div>
