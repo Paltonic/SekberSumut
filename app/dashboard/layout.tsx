@@ -12,13 +12,15 @@ import {
 import { signOut } from 'firebase/auth';
 import { auth } from '../../lib/firebase'; // Pastikan path ini benar
 import './layout.css';
+import logoIMG from '../assets/sekber_logo.png';
+import logoPMBE from '../assets/logo_pmbe.png';
 
 /* ---------- Profil Dummy ---------- */
 const userProfiles: Record<string, any> = {
   'Admin Sekber': {
     major: 'Administrator Sistem', divisi: 'Pengurus Pusat',
     status: '-', isActive: true, pspStatus: '-', isPspActive: true,
-    avatarUrl: 'https://drive.google.com/file/d/19_E1YvsC1AvVnaIeCAtRsUm7BobXT2eG/view?usp=sharing',
+    avatarUrl: 'https://drive.google.com/file/d/19_E1YvsC1AvVnaIeCAtRsUm7BobXT2eG/view?usp=drive_link',
   },
   'PMBE': {
     major: 'PMB Ehipassiko', divisi: 'Anggota Biasa',
