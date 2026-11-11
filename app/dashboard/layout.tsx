@@ -20,7 +20,7 @@ const userProfiles: Record<string, any> = {
   'Admin Sekber': {
     major: 'Administrator Sistem', divisi: 'Pengurus Pusat',
     status: '-', isActive: true, pspStatus: '-', isPspActive: true,
-    avatarUrl: 'https://drive.google.com/file/d/19_E1YvsC1AvVnaIeCAtRsUm7BobXT2eG/view?usp=drive_link',
+    avatarUrl: 'https://drive.google.com/file/d/1V5ycKFWHX3B-oHhnh7DRThMHjk8u4S-t/view?usp=drive_link',
   },
   'PMBE': {
     major: 'PMB Ehipassiko', divisi: 'Anggota Biasa',
