@@ -50,7 +50,7 @@ const userProfiles: Record<string, any> = {
   'Sher Lie' : {
     major: 'Sekber PMVBI Sumut', divisi: 'Wakil Sekretaris Provinsi IV',
     status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
-    avatarUrl: 'https://drive.google.com/file/d/18D_pzQxIMyvoGVeAs6wLFa1ChzQTm_PN/view?usp=drive_link',
+    avatarUrl: 'https://drive.google.com/file/d/1eTCzInNHuqxjksE33zlpo6rAU8F0VJtW/view?usp=drive_link',
   },
 };
 
