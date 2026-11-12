@@ -19,7 +19,7 @@ import './Dashboard.css';
 const ROLE_LISTS: Record<'admin' | 'pmv' | 'pengurus', string[]> = {
   admin:    ['Admin Sekber'],
   pmv:      ['PMBE', 'PMVMAS', 'PMVDA'],
-  pengurus: ['Ricky Martin', 'Felicia Livana'],
+  pengurus: ['Ricky Martin', 'Felicia Livana', 'Sher Lie'],
 };
 
 // ⬇️ UBAH JABATAN DI SINI (Gunakan nama jabatan yang singkat & jelas)
@@ -30,6 +30,7 @@ const JABATAN_BY_USERNAME: Record<string, string> = {
   'PMVDA':          'Anggota PMV/C',
   'Ricky Martin':   'Sekretaris Provinsi',
   'Felicia Livana': 'Wakil Sekretaris Provinsi III',
+  'Sher Lie':       'Wakil Sekretaris Provinsi IV',
 };
 
 // ================= TIPE =================

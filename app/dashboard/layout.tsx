@@ -47,6 +47,11 @@ const userProfiles: Record<string, any> = {
     status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
     avatarUrl: 'https://drive.google.com/file/d/1OdmiH1ptY8qv_-ymGlqNO-z4N9tDopqa/view?usp=drive_link',
   },
+  'Sher Lie' : {
+    major: 'Sekber PMVBI Sumut', divisi: 'Wakil Sekretaris Provinsi IV',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: 'https://drive.google.com/file/d/18D_pzQxIMyvoGVeAs6wLFa1ChzQTm_PN/view?usp=drive_link',
+  },
 };
 
 /* ---------- Menu ---------- */

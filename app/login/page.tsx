@@ -15,7 +15,8 @@ const validUsers = [
   { username: 'PMVDA', password: '@User123' },
   { username: 'PMVMAS', password: '@User045' },
   { username: 'Ricky Martin', password: '@Sekber001'},
-  { username: 'Felicia Livana', password: '@Sekber004'}
+  { username: 'Felicia Livana', password: '@Sekber004'},
+  { username: 'Sher Lie', password: '@Sekber005'},
 ];
 
 export default function LoginPage() {
