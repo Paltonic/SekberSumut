@@ -231,8 +231,7 @@ export default function HomeScreen() {
             <div className="divisi-icon">📝</div>
             <h3>Sekretaris Provinsi & Wakil</h3>
             <p>
-              Mengelola administrasi organisasi, surat-menyurat, arsip, dan
-              koordinasi kesekretariatan tingkat provinsi.
+              Memimpin dan merencanakan keputusan strategis organisasi, membimbing Seksi, serta menjalin hubungan baik dengan PMV/C/B dan internal/eksternal Keluarga Buddhayana Indonesia.
             </p>
           </div>
 
@@ -240,8 +239,7 @@ export default function HomeScreen() {
             <div className="divisi-icon">🗂️</div>
             <h3>Seksi Kesekretariatan</h3>
             <p>
-              Mendukung tugas sekretariat dalam pengelolaan dokumen, notulen
-              rapat, dan administrasi harian.
+              Mengendalikan administrasi, pengelolaan surat/dokumen, notulen rapat, inventaris, pembaharuan data PMV/C/B secara berkala, serta pengarsipan dokumen penting organisasi.
             </p>
           </div>
 
@@ -249,8 +247,7 @@ export default function HomeScreen() {
             <div className="divisi-icon">💰</div>
             <h3>Seksi Keuangan</h3>
             <p>
-              Mengelola anggaran, pembukuan, laporan keuangan, dan transparansi
-              keuangan organisasi.
+              Mengendalikan sistem dan prosedur keuangan, pencatatan jurnal, penyusunan laporan keuangan tahunan, audit internal, serta pengelolaan arus kas masuk dan keluar organisasi.
             </p>
           </div>
 
@@ -258,8 +255,7 @@ export default function HomeScreen() {
             <div className="divisi-icon">📚</div>
             <h3>Seksi Pengembangan SDM</h3>
             <p>
-              Peningkatan kapasitas anggota melalui pelatihan, kaderisasi, dan
-              pengembangan kompetensi pemuda.
+              Menganalisis kebutuhan dan mengadakan program pengembangan kualitas diri anggota di bidang pendidikan dan soft skill, seperti workshop karakter dan Monthly Recharge.
             </p>
           </div>
 
@@ -267,8 +263,7 @@ export default function HomeScreen() {
             <div className="divisi-icon">🧘</div>
             <h3>Seksi Pelayanan Dharma</h3>
             <p>
-              Pembinaan spiritual, kegiatan keagamaan, dan pelayanan dharma bagi
-              anggota serta masyarakat.
+              Mengoordinasikan kegiatan pelatihan spiritual dan penyebaran Dharma, seperti Kedai Dharma, Dharma Insight, Retret Hidup Berkesadaran, serta pelayanan kepada anggota Sangha.
             </p>
           </div>
 
@@ -276,17 +271,15 @@ export default function HomeScreen() {
             <div className="divisi-icon">🤝</div>
             <h3>Seksi Kemitraan</h3>
             <p>
-              Menjalin kerja sama dengan lembaga, organisasi, dan mitra strategis
-              untuk mendukung program kerja.
+              Mempererat tali persahabatan melalui kegiatan keakraban, mendukung alumni dan calon mahasiswa (Welcome Kalyanamitta), serta memberdayakan pemuda di bidang seni dan budaya.
             </p>
           </div>
 
           <div className="glass-card divisi-card">
             <div className="divisi-icon">📸</div>
-            <h3>Seksi Publikasi & Dokumentasi</h3>
+            <h3>Seksi Media Komunikasi</h3>
             <p>
-              Mengelola media sosial, konten, dan dokumentasi seluruh kegiatan
-              organisasi.
+              Mengelola dan memaksimalkan media sosial untuk penyebaran informasi dan Dharma, membuat poster/video kegiatan, serta mendokumentasikan seluruh aktivitas organisasi.
             </p>
           </div>
 
@@ -294,8 +287,7 @@ export default function HomeScreen() {
             <div className="divisi-icon">🏛️</div>
             <h3>DPD IPGABI Sumut</h3>
             <p>
-              Dewan Pimpinan Daerah Ikatan Pemuda GABI Sumatera Utara —
-              koordinasi dan pembinaan pemuda Buddhayana tingkat daerah.
+              Dewan Pimpinan Daerah Ikatan Pembina Gelanggang Anak-anak Buddhis Indonesia dengan mengoordinasikan pembinaan GABI di PMV/C/B melalui pelatihan (ToT), Gathering, dan Dharmma Vidya.
             </p>
           </div>
         </div>
@@ -392,7 +384,7 @@ export default function HomeScreen() {
 
               <div className="footer-social">
                 <a
-                  href="https://www.instagram.com/sekberpmvbi"
+                  href="https://www.instagram.com/sekberpmvbisumut"
                   aria-label="Instagram"
                   className="social-btn"
                   target="_blank"
@@ -414,7 +406,7 @@ export default function HomeScreen() {
                 </a>
 
                 <a
-                  href="https://web.facebook.com/pemudabuddhayana"
+                  href="https://www.facebook.com/sekberpmvbisumut"
                   aria-label="Facebook"
                   className="social-btn"
                   target="_blank"
@@ -454,7 +446,7 @@ export default function HomeScreen() {
                   </svg>
                 </a>
                 <a
-                  href="https://tiktok.com/@sekberpmvbi?is_from_webapp=1&sender_device=pc"
+                  href="https://tiktok.com/@sekberpmvbisumut?is_from_webapp=1&sender_device=pc"
                   aria-label="TikTok"
                   className="social-btn"
                   target="_blank"
@@ -500,13 +492,13 @@ export default function HomeScreen() {
                   <span className="contact-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" /><circle cx="12" cy="10" r="3" /></svg>
                   </span>
-                  <span>Jl. Bambu II, Kompleks Graha Niaga Blok A No. 2, Medan, Sumatera Utara, Indonesia 20235</span>
+                  <span>Buddhayana Center, Jl. Bambu II Kompleks Graha Niaga Blok A2, Medan 20235</span>
                 </li>
                 <li>
                   <span className="contact-icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
                   </span>
-                  <span>WA +62 821-6576-0993<br />WA +62 895-6111-79149</span>
+                  <span>(061) 4555586</span>
                 </li>
                 <li>
                   <span className="contact-icon">
