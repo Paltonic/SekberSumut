@@ -61,7 +61,8 @@ const menuItems = [
     subItems: [{ name: 'Wasekprov', href: '#' }, { name: 'Bidang Humas', href: '#' }] },
   { name: 'List PMV/C',      href: '#', hasSubmenu: true,
     subItems: [{ name: 'PMV A', href: '#' }, { name: 'PMV B', href: '#' }, { name: 'PMV C', href: '#' }] },
-  { name: 'PSP',             href: '/dashboard/formpsp', hasSubmenu: false },
+  { name: 'Program Standar PMV/C(PSP)', href: '/dashboard/formpsp', hasSubmenu: false },
+  { name: 'Pengkinian Data', href:'/dashboard/formpendataan', hasSubmenu:false },
   { name: 'Berita',          href: '#', hasSubmenu: false },
   { name: 'Pelatihan',       href: '#', hasSubmenu: false },
 ];
