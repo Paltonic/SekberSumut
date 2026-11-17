@@ -22,7 +22,6 @@ const ROLE_LISTS: Record<'admin' | 'pmv' | 'pengurus', string[]> = {
   pengurus: ['Ricky Martin', 'Felicia Livana', 'Sher Lie'],
 };
 
-// ⬇️ UBAH JABATAN DI SINI (Gunakan nama jabatan yang singkat & jelas)
 const JABATAN_BY_USERNAME: Record<string, string> = {
   'Admin Sekber':   'Administrator',
   'PMBE':           'Anggota PMV/C',
@@ -39,7 +38,8 @@ type UserRole = 'admin' | 'pmv' | 'pengurus' | 'member';
 
 type EventType = {
   id: string;
-  date: string;
+  date: string;      // Tanggal Mulai
+  endDate?: string;  // Tanggal Selesai (Baru)
   title: string;
   time: string;
   location: string;
@@ -62,13 +62,10 @@ const ROLE_META: Record<UserRole, { label: string; color: string; Icon: any }> =
 // ================= FUNGSI PINTAR UNTUK GAMBAR (GOOGLE DRIVE) =================
 function getAvatarSrc(url?: string) {
   if (!url) return '';
-  
   let fileId = '';
-
   if (url.includes('drive.google.com')) {
     const matchD = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
     const matchId = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
-    
     if (matchD && matchD[1]) fileId = matchD[1];
     else if (matchId && matchId[1]) fileId = matchId[1];
   } 
@@ -77,11 +74,7 @@ function getAvatarSrc(url?: string) {
   } else {
     return url;
   }
-
-  if (fileId) {
-    return `https://drive.google.com/thumbnail?id=${fileId}&sz=w500`;
-  }
-
+  if (fileId) return `https://drive.google.com/thumbnail?id=${fileId}&sz=w500`;
   return url;
 }
 
@@ -106,7 +99,7 @@ export default function DashboardPage() {
   const role = resolveRole(username);
   const jabatan = resolveJabatan(username, role);
   const isAdmin = role === 'admin';
-  const isPengurus = role === 'pengurus'; // <-- Tambahan pengecekan khusus
+  const isPengurus = role === 'pengurus';
 
   // ================= STATE KALENDER & WAKTU =================
   const [currentDate, setCurrentDate] = useState<Date | null>(null);
@@ -127,9 +120,12 @@ export default function DashboardPage() {
   // ================= FIREBASE: EVENTS =================
   const [events, setEvents] = useState<EventType[]>([]);
   const [isAddingEvent, setIsAddingEvent] = useState(false);
+  
+  // State form ditambah startDate dan endDate
   const [newEvent, setNewEvent] = useState<{
     title: string; time: string; location: string; division: Division;
-  }>({ title: '', time: '', location: '', division: 'all' });
+    startDate: string; endDate: string;
+  }>({ title: '', time: '', location: '', division: 'all', startDate: '', endDate: '' });
 
   useEffect(() => {
     if (!db) return;
@@ -147,23 +143,43 @@ export default function DashboardPage() {
   const canManageEvents = isAdmin;
   const canChooseDivision = isAdmin;
 
+  // Toggle form dan otomatis isi tanggal mulai & selesai sesuai yang diklik di kalender
+  const toggleAddEvent = () => {
+    if (!isAddingEvent && selectedDate) {
+      setNewEvent({
+        title: '', time: '', location: '', division: 'all',
+        startDate: formatDate(selectedDate),
+        endDate: formatDate(selectedDate)
+      });
+    }
+    setIsAddingEvent(!isAddingEvent);
+  };
+
   const handleAddEvent = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!canManageEvents) return;
-    if (!newEvent.title || !newEvent.time || !selectedDate) return;
+    if (!newEvent.title || !newEvent.time || !newEvent.startDate) return;
     if (!db) { alert("Koneksi database belum siap."); return; }
 
-    const selectedDateStr = formatDate(selectedDate);
+    // Validasi: Tanggal selesai tidak boleh lebih awal dari tanggal mulai
+    if (newEvent.endDate && newEvent.endDate < newEvent.startDate) {
+      alert("Tanggal selesai tidak boleh sebelum tanggal mulai!");
+      return;
+    }
+
+    const finalEndDate = newEvent.endDate || newEvent.startDate; // Jika kosong, samakan dengan start
+
     try {
       await addDoc(collection(db, "events"), {
-        date: selectedDateStr,
+        date: newEvent.startDate,
+        endDate: finalEndDate,
         title: newEvent.title,
         time: newEvent.time,
         location: newEvent.location,
         division: newEvent.division,
         createdAt: new Date(),
       });
-      setNewEvent({ title: '', time: '', location: '', division: 'all' });
+      setNewEvent({ title: '', time: '', location: '', division: 'all', startDate: '', endDate: '' });
       setIsAddingEvent(false);
     } catch (err) {
       console.error(err);
@@ -220,7 +236,21 @@ export default function DashboardPage() {
     }
   }
 
-  const eventsOnSelectedDate = visibleEvents.filter(e => e.date === selectedDateStr);
+  // FUNGSI BARU: Cek apakah tanggal tertentu berada di dalam rentang acara
+  const isEventOnDate = (event: EventType, dateStr: string) => {
+    const start = event.date;
+    const end = event.endDate || event.date;
+    return dateStr >= start && dateStr <= end;
+  };
+
+  const eventsOnSelectedDate = visibleEvents.filter(e => isEventOnDate(e, selectedDateStr));
+
+  // Helper untuk menampilkan format tanggal yang cantik (contoh: 3 Jan)
+  const formatDateIndo = (dateStr: string) => {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+  };
 
   // ================= BADGE JABATAN =================
   const jabatanBadge = (() => {
@@ -306,7 +336,8 @@ export default function DashboardPage() {
                           style={{ cursor: 'pointer', position: 'relative' }}
                         >
                           {item.day}
-                          {visibleEvents.some(e => e.date === itemDateStr) && !isSelected && (
+                          {/* Logika Dot Kuning diperbarui agar muncul di semua rentang tanggal */}
+                          {visibleEvents.some(e => isEventOnDate(e, itemDateStr)) && !isSelected && (
                             <span style={{
                               position: 'absolute', bottom: '4px', left: '50%', transform: 'translateX(-50%)',
                               width: '4px', height: '4px', borderRadius: '50%', background: '#FACC15'
@@ -331,7 +362,7 @@ export default function DashboardPage() {
 
                 {canManageEvents && selectedDate && (
                   <button
-                    onClick={() => setIsAddingEvent(!isAddingEvent)}
+                    onClick={toggleAddEvent}
                     style={{
                       background: '#FACC15', color: '#0f172a', border: 'none',
                       padding: '6px 12px', borderRadius: '6px', fontSize: '12px',
@@ -346,8 +377,31 @@ export default function DashboardPage() {
               {canManageEvents && isAddingEvent && (
                 <form onSubmit={handleAddEvent} style={{
                   background: '#1E293B', padding: '16px', borderRadius: '8px', marginBottom: '16px',
-                  border: '1px solid #334155', display: 'flex', flexDirection: 'column', gap: '8px'
+                  border: '1px solid #334155', display: 'flex', flexDirection: 'column', gap: '12px'
                 }}>
+                  
+                  {/* FITUR BARU: INPUT TANGGAL MULAI & SELESAI */}
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <div style={{ flex: 1 }}>
+                      <label style={{ fontSize: '11px', color: '#94A3B8', marginBottom: '4px', display: 'block' }}>Tanggal Mulai</label>
+                      <input
+                        type="date" required
+                        value={newEvent.startDate} 
+                        onChange={e => setNewEvent({ ...newEvent, startDate: e.target.value })}
+                        style={{ width: '100%', padding: '8px', borderRadius: '4px', background: '#0f172a', border: '1px solid #475569', color: '#fff', fontSize: '13px', colorScheme: 'dark' }}
+                      />
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <label style={{ fontSize: '11px', color: '#94A3B8', marginBottom: '4px', display: 'block' }}>Tanggal Selesai</label>
+                      <input
+                        type="date"
+                        value={newEvent.endDate} 
+                        onChange={e => setNewEvent({ ...newEvent, endDate: e.target.value })}
+                        style={{ width: '100%', padding: '8px', borderRadius: '4px', background: '#0f172a', border: '1px solid #475569', color: '#fff', fontSize: '13px', colorScheme: 'dark' }}
+                      />
+                    </div>
+                  </div>
+
                   <input
                     type="text" placeholder="Nama Acara" required
                     value={newEvent.title} onChange={e => setNewEvent({ ...newEvent, title: e.target.value })}
@@ -395,6 +449,7 @@ export default function DashboardPage() {
               {eventsOnSelectedDate.length > 0 ? (
                 eventsOnSelectedDate.map(e => {
                   const div: Division = e.division || 'all';
+                  const isMultiDay = e.endDate && e.endDate !== e.date;
                   return (
                     <div key={e.id} className="event-item" style={{ position: 'relative' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
@@ -406,6 +461,14 @@ export default function DashboardPage() {
                           {DIVISION_LABELS[div]}
                         </span>
                       </div>
+                      
+                      {/* INFO TANGGAL RENTANG DITAMPILKAN DI SINI */}
+                      <p style={{ margin: '4px 0', fontSize: '12px', color: '#FACC15', fontWeight: 600 }}>
+                        {isMultiDay 
+                          ? `📅 ${formatDateIndo(e.date)} - ${formatDateIndo(e.endDate!)}`
+                          : `📅 ${formatDateIndo(e.date)}`}
+                      </p>
+
                       <p>{e.time} • {e.location}</p>
 
                       {isAdmin && (
@@ -451,7 +514,6 @@ export default function DashboardPage() {
             Profil <a href="#"><ExternalLink size={12} /> Detail</a>
           </h2>
           <div className="profile-info">
-            {/* FOTO PROFIL KONDISIONAL: Pengurus = Bulat, Lainnya = Petak */}
             {profile?.avatarUrl ? (
               <img 
                 src={getAvatarSrc(profile.avatarUrl)} 
@@ -459,22 +521,17 @@ export default function DashboardPage() {
                 className="profile-img" 
                 referrerPolicy="no-referrer" 
                 style={{ 
-                  width: '120px', 
-                  height: '120px', 
-                  borderRadius: isPengurus ? '50%' : '0px', // <-- Logika bentuk di sini
-                  objectFit: 'cover',
-                  display: 'block',
-                  margin: '0 auto'
+                  width: '120px', height: '120px', 
+                  borderRadius: isPengurus ? '50%' : '0px',
+                  objectFit: 'cover', display: 'block', margin: '0 auto'
                 }}
               />
             ) : (
               <div 
                 className="profile-img" 
                 style={{ 
-                  background: '#334155',
-                  width: '120px', 
-                  height: '120px', 
-                  borderRadius: isPengurus ? '50%' : '0px', // <-- Logika bentuk di sini
+                  background: '#334155', width: '120px', height: '120px', 
+                  borderRadius: isPengurus ? '50%' : '0px',
                   margin: '0 auto'
                 }} 
               />
@@ -483,15 +540,11 @@ export default function DashboardPage() {
             <h3 className="profile-name">{username || 'User'}</h3>
             <p className="profile-major">{profile?.major || 'Memuat...'}</p>
 
-            {/* Badge jabatan */}
             <div style={{ marginTop: 8, textAlign: 'center' }}>{jabatanBadge}</div>
 
             <div
               className="status-grid"
-              style={{
-                marginTop: 12,
-                ...(isPengurus ? { gridTemplateColumns: '1fr' } : {})
-              }}
+              style={{ marginTop: 12, ...(isPengurus ? { gridTemplateColumns: '1fr' } : {}) }}
             >
               <div className="status-item">
                 <p>Keaktifan</p>
