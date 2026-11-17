@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useState, useRef } from 'react';
 import * as XLSX from 'xlsx';
 import './formpsp.css';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 // Pastikan path import ini sesuai dengan lokasi file data.ts Anda
 import { GROUPS, ITEMS, MARK_META, STORAGE_KEY, PMV_DATA, KOTA_LIST, type MarkKey } from '../../data/psp'; 
 
@@ -275,8 +277,25 @@ export default function PspPage() {
 
           <label className="psp-field">
             <span>Tgl. Identifikasi</span>
-            <input type="date" value={meta.tanggal}
-              onChange={e => handleMetaChange('tanggal', e.target.value)} />
+            <DatePicker
+              selected={meta.tanggal ? new Date(meta.tanggal) : null}
+              onChange={(date: Date | null) => {
+                // Format ke YYYY-MM-DD agar tetap kompatibel dengan sistem Anda
+                if (date) {
+                  const offset = date.getTimezoneOffset();
+                  const localDate = new Date(date.getTime() - (offset * 60 * 1000));
+                  handleMetaChange('tanggal', localDate.toISOString().split('T')[0]);
+                } else {
+                  handleMetaChange('tanggal', '');
+                }
+              }}
+              dateFormat="dd/MM/yyyy"
+              placeholderText="Pilih Tanggal"
+              className="psp-custom-datepicker"
+              wrapperClassName="psp-datepicker-wrapper"
+              showPopperArrow={false}
+              popperPlacement="bottom-start"
+            />
           </label>
         </div>
       </div>

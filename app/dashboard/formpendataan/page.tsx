@@ -4,6 +4,8 @@ import { useEffect, useState, useRef } from 'react';
 import * as XLSX from 'xlsx';
 import JSZip from 'jszip'; // Import JSZip
 import './formpendataan.css';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { SECTIONS, STORAGE_KEY, FormField } from '../../data/pendataan';
 
 export default function PendataanPage() {
@@ -156,7 +158,7 @@ export default function PendataanPage() {
     }
   };
 
-  const renderField = (field: FormField) => {
+    const renderField = (field: FormField) => {
     const isRequired = field.required;
     const value = formData[field.name] || '';
     const file = files[field.name];
@@ -212,6 +214,27 @@ export default function PendataanPage() {
               {file ? `✓ ${file.name}` : 'Belum ada file dipilih'}
             </div>
           </div>
+        ) : field.type === 'date' ? (
+          /* --- TAMBAHAN UNTUK CUSTOM DATE PICKER --- */
+          <DatePicker
+            selected={value ? new Date(value) : null}
+            onChange={(date: Date | null) => {
+              if (date) {
+                const offset = date.getTimezoneOffset();
+                const localDate = new Date(date.getTime() - (offset * 60 * 1000));
+                handleInputChange(field.name, localDate.toISOString().split('T')[0]);
+              } else {
+                handleInputChange(field.name, '');
+              }
+            }}
+            dateFormat="dd/MM/yyyy"
+            placeholderText={field.placeholder || "Pilih Tanggal"}
+            className="pd-custom-datepicker"
+            wrapperClassName="pd-datepicker-wrapper"
+            showPopperArrow={false}
+            popperPlacement="bottom-start"
+            required={isRequired}
+          />
         ) : (
           <input
             type={field.type}
