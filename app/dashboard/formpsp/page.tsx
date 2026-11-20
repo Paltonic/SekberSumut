@@ -277,6 +277,17 @@ export default function PspPage() {
 
           <label className="psp-field">
             <span>Tgl. Identifikasi</span>
+            {/* DatePicker memanggil new Date() di dalamnya → hanya render setelah
+                halaman terbuka di browser (ready = true), bukan saat build */}
+            {!ready ? (
+              <input
+                type="text"
+                className="psp-custom-datepicker"
+                placeholder="Pilih Tanggal"
+                disabled
+                readOnly
+              />
+            ) : (
             <DatePicker
               selected={meta.tanggal ? new Date(meta.tanggal) : null}
               onChange={(date: Date | null) => {
@@ -296,6 +307,7 @@ export default function PspPage() {
               showPopperArrow={false}
               popperPlacement="bottom-start"
             />
+            )}
           </label>
         </div>
       </div>
