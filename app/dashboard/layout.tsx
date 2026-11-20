@@ -37,6 +37,226 @@ const userProfiles: Record<string, any> = {
     status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
     avatarUrl: 'https://drive.google.com/file/d/1SEJ7O1SyX3G11u4BG7-7kH8QSzJFEfOP/view?usp=drive_link',
   },
+'PMVMDA': {
+    major: 'PMV Magga Dhamma', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVP': {
+    major: 'PMV Paradipa', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVSM': {
+    major: 'PMV Swastimuni', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMPJM': {
+    major: 'PM Prasadha Jinadhammo', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVBLM': {
+    major: 'PMV Buddha Loka Manggala', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVBN': {
+    major: 'PMV Buddha Narada', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVBR': {
+    major: 'PMV Buddha Ramsi', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVBA': {
+    major: 'PMV Budi Abadi', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVHTT': {
+    major: 'PMV Hok Tek Tong', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMMITBC': {
+    major: 'PMV Sakyamuni Buddha - Indonesia Theravada Buddhist Centre (ITBC)', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVSD': {
+    major: 'PMV Satya Dharma', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMCVD': {
+    major: 'PMC Virya Dharma', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVBJ': {
+    major: 'PMV Buddha Jayanti', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMCB': {
+    major: 'PMC Buddhayana', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVJ': {
+    major: 'PMV Jetavana', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMMABT': {
+    major: 'PMM Asokarama Buddhist Temple', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVL': {
+    major: 'PMV Lokesvara', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVSB': {
+    major: 'PMV Sakyamuni Buddha', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMSBGBC': {
+    major: 'PM Sakya Buddha Gautama Buddhist Center', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'SAMUVDA': {
+    major: 'PMV Buddha Paduma', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVBP': {
+    major: 'PMV Buddha Paduma', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVVD': {
+    major: 'PMV Vimala Dharma', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVDCBC': {
+    major: 'PMV Dharma Cakra Buddhist Center', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMBV': {
+    major: 'PMB Viriyadhika', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMCA': {
+    major: 'PMC Aryavamsa', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVADS': {
+    major: 'PMV Adi Dharma Shanti', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVB': {
+    major: 'PMV Borobudur', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVDW': {
+    major: 'PMV Dharma Wijaya', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVLS': {
+    major: 'PMV Loka Shanti', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVMM': {
+    major: 'PMV Maha Manggala', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVM': {
+    major: 'PMV Mendut', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVMJ': {
+    major: 'PMV Metta Jaya', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVMBC': {
+    major: 'PMV Mitra Buddhist Center', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVRSA': {
+    major: 'PMV Ratana Stupa Agung', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVS': {
+    major: 'PMV Sakyamuni', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVAPS': {
+    major: 'PMV Avalokitesvara', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMCBB': {
+    major: 'PMC Bodhi Buddhayana', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVAS': {
+    major: 'PMV Avalokitesvara', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVTR': {
+    major: 'PMV Tri Ratna', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVV': {
+    major: 'PMV Vessabhu', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMCE': {
+    major: 'PMC Ekayana', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVATT': {
+    major: 'PMV Avalokitesvara', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVMD': {
+    major: 'PMV Maha Dana', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
+  'PMVVVG': {
+    major: 'PMV Vidya Vajra Ganda', divisi: 'Anggota Biasa',
+    status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
+    avatarUrl: '',
+  },
   'Ricky Martin' : {
     major: 'Sekber PMVBI Sumut', divisi: 'Sekretaris Provinsi',
     status: 'Aktif', isActive: true, pspStatus: 'Belum Selesai', isPspActive: false,
