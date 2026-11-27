@@ -22,7 +22,6 @@ type Props = {
   onDelete?: (e: EventType) => void;
   /** tampilkan label "Publik/Internal" di kartu (untuk admin) */
   showVisibility?: boolean;
-  isPublicFn?: (e: EventType) => boolean;
 };
 
 type View = 'month' | 'agenda';
@@ -60,7 +59,7 @@ function layoutWeek(weekDays: Date[], events: EventType[]) {
 }
 
 export default function EventCalendar({
-  events, loading, error, canManage, onAdd, onEdit, onDelete, showVisibility, isPublicFn,
+  events, loading, error, canManage, onAdd, onEdit, onDelete, showVisibility,
 }: Props) {
   const [todayKey, setTodayKey] = useState('');
   const [viewYear, setViewYear] = useState(0);
@@ -142,8 +141,8 @@ export default function EventCalendar({
             </span>
             {isOngoing && <span className="ev-tag live">Berlangsung</span>}
             {isMultiDay(e) && <span className="ev-tag muted">{daysBetween(e.date, eventEnd(e)) + 1} hari</span>}
-            {showVisibility && isPublicFn && (
-              <span className="ev-tag muted">{isPublicFn(e) ? 'Publik' : 'Internal'}</span>
+            {showVisibility && (
+              <span className="ev-tag muted">{div === 'all' ? 'Publik' : 'Internal'}</span>
             )}
           </div>
           <h4>{e.title}</h4>

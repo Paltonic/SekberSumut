@@ -28,7 +28,7 @@ const userProfiles: Record<string, any> = {
     avatarUrl: 'https://drive.google.com/file/d/1e7sKgaE_O3AHTk4d3gmPw-Jqr21ECGtE/view?usp=drive_link',
   },
   'PMVDA': {
-    major: 'PMV Dharma Aura', divisi: 'Divisi Humas',
+    major: 'PMV Dharma Aura', divisi: 'Anggota Biasa',
     status: 'Aktif', isActive: true, pspStatus: 'Selesai', isPspActive: true,
     avatarUrl: 'https://drive.google.com/file/d/1xMkbFkiPsh5G6O29QxHaurB532heqHu6/view?usp=drive_link',
   },

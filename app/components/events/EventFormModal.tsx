@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { X, Trash2, Save, Globe, Lock } from 'lucide-react';
 import { addDoc, collection, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../lib/firebase';
-import { Division, EventType, DIVISION_LABELS, isPublicEvent } from '../../../lib/events';
+import { Division, EventType, DIVISION_LABELS } from '../../../lib/events';
 import RangeDatePicker from './RangeDatePicker';
 import './events.css';
 
@@ -23,14 +23,20 @@ type FormState = {
   location: string;
   description: string;
   division: Division;
-  isPublic: boolean;
   startDate: string;
   endDate: string;
 };
 
+const VISIBILITY_TEXT: Record<Division, string> = {
+  all: 'Semua orang, tampil juga di landing page',
+  pmv: 'Hanya akun PMV (dan admin)',
+  pengurus: 'Hanya akun Pengurus (dan admin)',
+  both: 'Akun PMV & Pengurus (dan admin)',
+};
+
 const emptyForm = (date: string): FormState => ({
   title: '', time: '', location: '', description: '',
-  division: 'all', isPublic: true, startDate: date, endDate: date,
+  division: 'all', startDate: date, endDate: date,
 });
 
 export default function EventFormModal({ open, editing, defaultDate, onClose }: Props) {
@@ -49,7 +55,6 @@ export default function EventFormModal({ open, editing, defaultDate, onClose }: 
         location: editing.location || '',
         description: editing.description || '',
         division: editing.division || 'all',
-        isPublic: isPublicEvent(editing),
         startDate: editing.date,
         endDate: editing.endDate || editing.date,
       });
@@ -85,7 +90,6 @@ export default function EventFormModal({ open, editing, defaultDate, onClose }: 
       location: form.location.trim(),
       description: form.description.trim(),
       division: form.division,
-      isPublic: form.isPublic,
     };
 
     setSaving(true);
@@ -178,21 +182,16 @@ export default function EventFormModal({ open, editing, defaultDate, onClose }: 
               <span>Divisi</span>
               <select value={form.division} onChange={(e) => set('division', e.target.value as Division)}>
                 {(Object.keys(DIVISION_LABELS) as Division[]).map((d) => (
-                  <option key={d} value={d}>{d === 'all' ? 'Umum (Semua)' : DIVISION_LABELS[d]}</option>
+                  <option key={d} value={d}>{d === 'all' ? 'Umum (Semua + halaman publik)' : DIVISION_LABELS[d]}</option>
                 ))}
               </select>
             </label>
             <div className="ev-field">
-              <span>Visibilitas</span>
-              <button
-                type="button"
-                className={`ev-toggle ${form.isPublic ? 'on' : ''}`}
-                onClick={() => set('isPublic', !form.isPublic)}
-                aria-pressed={form.isPublic}
-              >
-                {form.isPublic ? <Globe size={15} /> : <Lock size={15} />}
-                {form.isPublic ? 'Tampil di halaman publik' : 'Hanya untuk anggota (login)'}
-              </button>
+              <span>Siapa yang bisa melihat</span>
+              <div className={`ev-toggle ${form.division === 'all' ? 'on' : ''}`}>
+                {form.division === 'all' ? <Globe size={15} /> : <Lock size={15} />}
+                {VISIBILITY_TEXT[form.division]}
+              </div>
             </div>
           </div>
 

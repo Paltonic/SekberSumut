@@ -3,7 +3,8 @@
 // Dipakai bersama oleh landing page (publik) dan dashboard (admin)
 // ============================================================
 
-export type Division = 'all' | 'pmv' | 'pengurus';
+export type Division = 'all' | 'pmv' | 'pengurus' | 'both';
+export type ViewerRole = 'admin' | 'pmv' | 'pengurus' | 'member' | 'public';
 
 export type EventType = {
   id: string;
@@ -14,20 +15,20 @@ export type EventType = {
   location: string;
   description?: string;
   division?: Division;
-  /** Tampil di landing page tanpa login. Jika kosong: otomatis publik bila divisi "Umum". */
-  isPublic?: boolean;
 };
 
 export const DIVISION_LABELS: Record<Division, string> = {
   all: 'Umum',
   pmv: 'PMV',
   pengurus: 'Pengurus',
+  both: 'PMV & Pengurus',
 };
 
 export const DIVISION_COLORS: Record<Division, string> = {
   all: '#FACC15',
   pmv: '#3B82F6',
   pengurus: '#A78BFA',
+  both: '#2DD4BF',
 };
 
 export const MONTHS_ID = [
@@ -73,9 +74,24 @@ export function isMultiDay(e: EventType): boolean {
   return eventEnd(e) !== e.date;
 }
 
+/**
+ * Siapa yang boleh melihat acara:
+ *  - Umum (all)          : semua orang, termasuk pengunjung landing page
+ *  - PMV (pmv)           : admin + akun PMV
+ *  - Pengurus (pengurus) : admin + akun Pengurus
+ *  - PMV & Pengurus (both): admin + akun PMV + akun Pengurus
+ */
+export function canViewEvent(e: EventType, role: ViewerRole): boolean {
+  const div: Division = e.division || 'all';
+  if (div === 'all') return true;
+  if (role === 'admin') return true;
+  if (div === 'both') return role === 'pmv' || role === 'pengurus';
+  return div === role;
+}
+
+/** Hanya acara Umum yang tampil di landing page (tanpa login). */
 export function isPublicEvent(e: EventType): boolean {
-  if (typeof e.isPublic === 'boolean') return e.isPublic;
-  return (e.division || 'all') === 'all';
+  return canViewEvent(e, 'public');
 }
 
 /** Senin = 0 ... Minggu = 6 */

@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { deleteDoc, doc } from 'firebase/firestore';
 import { db } from '../../lib/firebase';
-import { EventType, isPublicEvent, toKey } from '../../lib/events';
+import { EventType, canViewEvent, toKey } from '../../lib/events';
 import { useEvents } from '../components/events/useEvents';
 import EventCalendar from '../components/events/EventCalendar';
 import EventFormModal from '../components/events/EventFormModal';
@@ -119,11 +119,8 @@ export default function DashboardPage() {
   };
 
   // ================= FILTER EVENT SESUAI ROLE =================
-  const visibleEvents = events.filter(e => {
-    const div = e.division || 'all';
-    if (role === 'admin' || role === 'member') return true;
-    return div === 'all' || div === role;
-  });
+  // admin: semua | pmv: Umum + PMV + PMV&Pengurus | pengurus: Umum + Pengurus + PMV&Pengurus | lainnya: Umum
+  const visibleEvents = events.filter(e => canViewEvent(e, role));
 
   // ================= BADGE JABATAN =================
   const jabatanBadge = (() => {
@@ -172,7 +169,7 @@ export default function DashboardPage() {
             </h2>
             <p style={{ margin: '4px 0 0', fontSize: 13, color: '#94A3B8' }}>
               {canManageEvents
-                ? 'Klik acara untuk melihat detail, edit, atau hapus. Jadwal bertanda "Publik" juga tampil di halaman depan.'
+                ? 'Klik acara untuk melihat detail, edit, atau hapus. Hanya jadwal divisi "Umum" yang tampil di halaman depan.'
                 : 'Klik tanggal atau acara untuk melihat detailnya.'}
             </p>
           </div>
@@ -186,7 +183,6 @@ export default function DashboardPage() {
             onEdit={openEdit}
             onDelete={handleDeleteEvent}
             showVisibility={canManageEvents}
-            isPublicFn={isPublicEvent}
           />
         </div>
 
