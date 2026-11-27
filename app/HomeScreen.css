@@ -985,3 +985,27 @@ a {
     scroll-behavior: auto !important;
   }
 }
+/* ============================================================
+   AGENDA KEGIATAN (PUBLIK)
+   catatan: jangan beri transform / backdrop-filter pada .agenda-wrap
+   agar modal detail acara (position: fixed) tetap menutupi layar.
+   ============================================================ */
+.agenda-intro {
+  max-width: 640px;
+  margin: -20px auto 32px;
+  text-align: center;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+
+.agenda-wrap {
+  background: linear-gradient(180deg, rgba(30, 64, 175, 0.18), rgba(10, 15, 29, 0.6));
+  border: 1px solid var(--glass-border);
+  border-radius: 22px;
+  padding: 22px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 640px) {
+  .agenda-wrap { padding: 12px; border-radius: 16px; }
+}

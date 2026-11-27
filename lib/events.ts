@@ -1,0 +1,129 @@
+// ============================================================
+// UTILITAS JADWAL / AKTIVITAS SEKBER
+// Dipakai bersama oleh landing page (publik) dan dashboard (admin)
+// ============================================================
+
+export type Division = 'all' | 'pmv' | 'pengurus';
+
+export type EventType = {
+  id: string;
+  date: string;          // Tanggal mulai  (YYYY-MM-DD)
+  endDate?: string;      // Tanggal selesai (YYYY-MM-DD)
+  title: string;
+  time: string;
+  location: string;
+  description?: string;
+  division?: Division;
+  /** Tampil di landing page tanpa login. Jika kosong: otomatis publik bila divisi "Umum". */
+  isPublic?: boolean;
+};
+
+export const DIVISION_LABELS: Record<Division, string> = {
+  all: 'Umum',
+  pmv: 'PMV',
+  pengurus: 'Pengurus',
+};
+
+export const DIVISION_COLORS: Record<Division, string> = {
+  all: '#FACC15',
+  pmv: '#3B82F6',
+  pengurus: '#A78BFA',
+};
+
+export const MONTHS_ID = [
+  'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+  'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember',
+];
+export const MONTHS_SHORT_ID = [
+  'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des',
+];
+export const WEEKDAYS_ID = ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
+
+/** Date -> 'YYYY-MM-DD' (waktu lokal) */
+export function toKey(d: Date): string {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+}
+
+/** 'YYYY-MM-DD' -> Date lokal (tanpa geser zona waktu) */
+export function fromKey(key: string): Date {
+  const [y, m, d] = key.split('-').map(Number);
+  return new Date(y, (m || 1) - 1, d || 1);
+}
+
+export function addDays(d: Date, n: number): Date {
+  const r = new Date(d);
+  r.setDate(r.getDate() + n);
+  return r;
+}
+
+export function daysBetween(startKey: string, endKey: string): number {
+  const ms = fromKey(endKey).getTime() - fromKey(startKey).getTime();
+  return Math.round(ms / 86400000);
+}
+
+export function eventEnd(e: EventType): string {
+  return e.endDate && e.endDate >= e.date ? e.endDate : e.date;
+}
+
+export function isEventOnDate(e: EventType, key: string): boolean {
+  return key >= e.date && key <= eventEnd(e);
+}
+
+export function isMultiDay(e: EventType): boolean {
+  return eventEnd(e) !== e.date;
+}
+
+export function isPublicEvent(e: EventType): boolean {
+  if (typeof e.isPublic === 'boolean') return e.isPublic;
+  return (e.division || 'all') === 'all';
+}
+
+/** Senin = 0 ... Minggu = 6 */
+export function mondayIndex(d: Date): number {
+  const x = d.getDay();
+  return x === 0 ? 6 : x - 1;
+}
+
+/** 42 sel (6 minggu) untuk tampilan bulan, mulai hari Senin */
+export function buildMonthGrid(year: number, month: number): Date[] {
+  const first = new Date(year, month, 1);
+  const start = addDays(first, -mondayIndex(first));
+  return Array.from({ length: 42 }, (_, i) => addDays(start, i));
+}
+
+export function formatLong(key: string): string {
+  const d = fromKey(key);
+  return `${d.getDate()} ${MONTHS_ID[d.getMonth()]} ${d.getFullYear()}`;
+}
+
+export function formatShort(key: string): string {
+  const d = fromKey(key);
+  return `${d.getDate()} ${MONTHS_SHORT_ID[d.getMonth()]}`;
+}
+
+export function formatWeekdayLong(key: string): string {
+  return fromKey(key).toLocaleDateString('id-ID', {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+  });
+}
+
+/** "3 – 5 Des 2026", "28 Nov – 2 Des 2026", "3 Des 2026" */
+export function formatRange(startKey: string, endKey?: string): string {
+  const s = fromKey(startKey);
+  const end = endKey && endKey >= startKey ? endKey : startKey;
+  const e = fromKey(end);
+  if (end === startKey) return `${s.getDate()} ${MONTHS_SHORT_ID[s.getMonth()]} ${s.getFullYear()}`;
+  if (s.getFullYear() !== e.getFullYear()) {
+    return `${s.getDate()} ${MONTHS_SHORT_ID[s.getMonth()]} ${s.getFullYear()} – ${e.getDate()} ${MONTHS_SHORT_ID[e.getMonth()]} ${e.getFullYear()}`;
+  }
+  if (s.getMonth() !== e.getMonth()) {
+    return `${s.getDate()} ${MONTHS_SHORT_ID[s.getMonth()]} – ${e.getDate()} ${MONTHS_SHORT_ID[e.getMonth()]} ${e.getFullYear()}`;
+  }
+  return `${s.getDate()} – ${e.getDate()} ${MONTHS_SHORT_ID[s.getMonth()]} ${s.getFullYear()}`;
+}
+
+export function sortEvents(list: EventType[]): EventType[] {
+  return [...list].sort((a, b) =>
+    a.date === b.date ? (a.time || '').localeCompare(b.time || '') : a.date.localeCompare(b.date),
+  );
+}

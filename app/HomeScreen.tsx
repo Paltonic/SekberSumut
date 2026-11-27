@@ -5,8 +5,11 @@ import './HomeScreen.css'
 import Link from 'next/link'
 import logoImg from './assets/sekber_logo.png'
 import mascotImg from './assets/mascoot.png' 
+import EventCalendar from './components/events/EventCalendar'
+import { useEvents } from './components/events/useEvents'
+import { isPublicEvent } from '../lib/events'
 
-const APP_VERSION = 'v1.1.3'
+const APP_VERSION = 'v1.2.1'
 const APP_CREDIT = '© 2026 FLik FLip. All rights reserved.'
 
 // Pastikan Anda sudah meng-import gambar Anda di sini
@@ -38,6 +41,10 @@ const heroSlides = [
 export default function HomeScreen() {
   const [currentSlide, setCurrentSlide] = useState(0)
   
+  // JADWAL AKTIVITAS PUBLIK (tanpa login, hanya baca)
+  const { events, loading: eventsLoading, error: eventsError } = useEvents()
+  const publicEvents = events.filter(isPublicEvent)
+
   // STATE UNTUK MOBILE MENU
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -83,6 +90,7 @@ export default function HomeScreen() {
           <nav className="nav-links">
             <a href="#beranda">Home</a>
             <a href="#program">Programme</a>
+            <a href="#agenda">Agenda</a>
             <a href="#divisi">Division</a>
             <a href="#tentang">About</a>
             <a href="#kontak">Contact</a>
@@ -109,6 +117,7 @@ export default function HomeScreen() {
             <div className="mobile-menu">
               <a href="#beranda" onClick={() => setIsMenuOpen(false)}>Home</a>
               <a href="#program" onClick={() => setIsMenuOpen(false)}>Programme</a>
+              <a href="#agenda" onClick={() => setIsMenuOpen(false)}>Agenda</a>
               <a href="#divisi" onClick={() => setIsMenuOpen(false)}>Division</a>
               <a href="#tentang" onClick={() => setIsMenuOpen(false)}>About</a>
               <a href="#kontak" onClick={() => setIsMenuOpen(false)}>Contact</a>
@@ -216,6 +225,20 @@ export default function HomeScreen() {
             <h3>Event & Sosial</h3>
             <p>Mempererat persaudaraan melalui Welcome Kalyanamitta dan Monthly Recharge.</p>
           </div>
+        </div>
+      </section>
+
+      {/* AGENDA KEGIATAN (PUBLIK) */}
+      <section id="agenda" className="section">
+        <div className="section-header">
+          <span className="section-label">Aktivitas</span>
+          <h2 className="section-title">Agenda Kegiatan</h2>
+        </div>
+        <p className="agenda-intro">
+          Ikuti jadwal kegiatan Sekber PMVBI Sumatera Utara. Klik tanggal atau acara untuk melihat detailnya.
+        </p>
+        <div className="agenda-wrap">
+          <EventCalendar events={publicEvents} loading={eventsLoading} error={eventsError} />
         </div>
       </section>
 
@@ -468,6 +491,7 @@ export default function HomeScreen() {
               <ul className="footer-list">
                 <li><a href="#beranda">Beranda</a></li>
                 <li><a href="#program">Program</a></li>
+                <li><a href="#agenda">Agenda</a></li>
                 <li><a href="#divisi">Divisi</a></li>
                 <li><a href="#tentang">Tentang Kami</a></li>
                 <li><a href="#kontak">Kontak</a></li>
