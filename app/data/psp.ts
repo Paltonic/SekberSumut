@@ -834,3 +834,57 @@ export const GROUPS: Group[] = ITEMS.reduce<Group[]>((acc, it) => {
   else acc.push({ key, komponen: it.komponen, item: it.item, items: [it] });
   return acc;
 }, []);
+
+// ==========================================
+// TAMBAHAN BARU: DATA MASTER PMV & KOTA
+// ==========================================
+export const PMV_DATA = [
+  { kota: "Kab. Asahan", nama: "PMV Magga Dhamma" },
+  { kota: "Kab. Asahan", nama: "PMV Paradipa" },
+  { kota: "Kab. Asahan", nama: "PMV Swastimuni" },
+  { kota: "Kab. Deli Serdang", nama: "PM Prasada Jinadhammo" },
+  { kota: "Kab. Deli Serdang", nama: "PMV Buddha Loka Mangala" },
+  { kota: "Kab. Deli Serdang", nama: "PMV Buddha Narada" },
+  { kota: "Kab. Deli Serdang", nama: "PMV Buddha Ramsi" },
+  { kota: "Kab. Deli Serdang", nama: "PMV Budi Abadi" },
+  { kota: "Kab. Deli Serdang", nama: "PMV Hok Tek Tong" },
+  { kota: "Kab. Deli Serdang", nama: "PMV Sakyamuni Buddha ITBC" },
+  { kota: "Kab. Deli Serdang", nama: "PMV Satya Dharma" },
+  { kota: "Kab. Labuhanbatu", nama: "PMC Virya Dharma" },
+  { kota: "Kab. Labuhanbatu", nama: "PMV Buddha Jayanti" },
+  { kota: "Kab. Labuhanbatu Utara", nama: "PMC Buddhavana" },
+  { kota: "Kab. Labuhanbatu Utara", nama: "PMV Jetavana" },
+  { kota: "Kab. Langkat", nama: "PMM Asokarama Buddhist Temple" },
+  { kota: "Kab. Serdang Bedagai", nama: "PMV Lokesvara" },
+  { kota: "Kab. Serdang Bedagai", nama: "PMV Sakyamuni Buddha" },
+  { kota: "Kota Binjai", nama: "PM Sakya Buddha Gotama Buddhist Center" },
+  { kota: "Kota Binjai", nama: "PMV Buddha Paduma" },
+  { kota: "Kota Gunungsitoli", nama: "PMV Vimala Dharma" },
+  { kota: "Kota Medan", nama: "PMV Dharma Cakra Buddhist Center" },
+  { kota: "Kota Medan", nama: "PMB Ehipassiko" },
+  { kota: "Kota Medan", nama: "PMB Viriyadhika" },
+  { kota: "Kota Medan", nama: "PMC Aryavamsa" },
+  { kota: "Kota Medan", nama: "PMV Adi Dharma Santi" },
+  { kota: "Kota Medan", nama: "PMV Borobudur" },
+  { kota: "Kota Medan", nama: "PMV Dharma Aura" },
+  { kota: "Kota Medan", nama: "PMV Dharma Wijaya" },
+  { kota: "Kota Medan", nama: "PMV Loka Santi" },
+  { kota: "Kota Medan", nama: "PMV Mendut" },
+  { kota: "Kota Medan", nama: "PMV Metta Jaya" },
+  { kota: "Kota Medan", nama: "PMV Mitra Buddhist Center" },
+  { kota: "Kota Medan", nama: "PMV Ratana Stupa Agung" },
+  { kota: "Kota Medan", nama: "PMV Sakyamuni" },
+  { kota: "Kota Medan", nama: "PMV Maha Mangala" },
+  { kota: "Kota Padang Sidempuan", nama: "PMV Avalokitesvara" },
+  { kota: "Kota Pematangsiantar", nama: "PMC Bodhi Buddhavana" },
+  { kota: "Kota Sibolga", nama: "PMV Avalokitesvara" },
+  { kota: "Kota Tanjungbalai", nama: "PMV Tri Ratna" },
+  { kota: "Kota Tanjungbalai", nama: "PMV Vessabhu" },
+  { kota: "Kota Tebing Tinggi", nama: "PMC Ekayana" },
+  { kota: "Kota Tebing Tinggi", nama: "PMV Avalokitesvara" },
+  { kota: "Kota Tebing Tinggi", nama: "PMV Maha Dana" },
+  { kota: "Kota Tebing Tinggi", nama: "PMV Vidya Vajra Ganda" }
+];
+
+// Ambil daftar unik kota untuk dropdown
+export const KOTA_LIST = Array.from(new Set(PMV_DATA.map(p => p.kota))).sort();

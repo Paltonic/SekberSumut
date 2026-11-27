@@ -3,7 +3,10 @@
 import { useEffect, useMemo, useState, useRef } from 'react';
 import * as XLSX from 'xlsx';
 import './formpsp.css';
-import { GROUPS, ITEMS, MARK_META, STORAGE_KEY, type MarkKey } from '../../data/psp';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+// Pastikan path import ini sesuai dengan lokasi file data.ts Anda
+import { GROUPS, ITEMS, MARK_META, STORAGE_KEY, PMV_DATA, KOTA_LIST, type MarkKey } from '../../data/psp'; 
 
 const LEVEL_CLASS: Record<string, string> = {
   Hijau: 'levelHijau',
@@ -21,7 +24,6 @@ export default function PspPage() {
   const [currentGroup, setCurrentGroup] = useState(0);
   const [showResult, setShowResult] = useState(false);
 
-  // State untuk pengiriman Email
   const [isSending, setIsSending] = useState(false);
   const [sendStatus, setSendStatus] = useState<{ type: 'success' | 'error', msg: string } | null>(null);
 
@@ -96,6 +98,16 @@ export default function PspPage() {
     setMeta(prev => ({ ...prev, [key]: val }));
   };
 
+  // Fungsi Otomatis Isi Kota saat Nama PMV dipilih
+  const handlePmvChange = (val: string) => {
+    const foundPmv = PMV_DATA.find(p => p.nama === val);
+    setMeta(prev => ({
+      ...prev,
+      nama: val,
+      kota: foundPmv ? foundPmv.kota : prev.kota
+    }));
+  };
+
   const resetAll = () => {
     if (!confirm('Kosongkan seluruh penilaian dan keterangan?')) return;
     setMarks({}); setNotes({}); setShowResult(false);
@@ -144,9 +156,6 @@ export default function PspPage() {
     return data;
   };
 
-  // ==========================================
-  // FUNGSI 1: DOWNLOAD EXCEL
-  // ==========================================
   const handleDownloadExcel = () => {
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.aoa_to_sheet(generateExcelData());
@@ -159,9 +168,6 @@ export default function PspPage() {
     XLSX.writeFile(wb, `Formulir_Identifikasi_${meta.nama.replace(/\s+/g, '_') || 'PMV'}.xlsx`);
   };
 
-  // ==========================================
-  // FUNGSI 2: KIRIM KE EMAIL (FORM SUBMIT)
-  // ==========================================
   const handleSendEmail = () => {
     if (!meta.nama.trim() || !meta.kota.trim() || !meta.tanggal) {
       alert('⚠ Harap lengkapi Nama PMV/C, Kab/Kota, dan Tanggal Identifikasi di bagian atas terlebih dahulu!');
@@ -173,7 +179,6 @@ export default function PspPage() {
     setSendStatus(null);
 
     try {
-      // 1. Siapkan File Excel
       const wb = XLSX.utils.book_new();
       const ws = XLSX.utils.aoa_to_sheet(generateExcelData());
       XLSX.utils.book_append_sheet(wb, ws, "Formulir Identifikasi PSP");
@@ -185,18 +190,16 @@ export default function PspPage() {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' 
       });
 
-      // 2. Buat elemen Form HTML secara dinamis
       const form = document.createElement('form');
-      form.action = 'https://formsubmit.co/psdmsekberpmvbisumut@gmail.com'; // Tanpa /ajax/
+      form.action = 'https://formsubmit.co/psdmsekberpmvbisumut@gmail.com';
       form.method = 'POST';
       form.enctype = 'multipart/form-data';
       form.style.display = 'none';
 
-      // 3. Tambahkan data teks
       const fields = {
         _subject: `PSP Baru: ${meta.nama}`,
-        _next: window.location.href, // Mengembalikan user ke halaman ini setelah sukses
-        _captcha: 'false', // Mematikan captcha jika tidak diperlukan
+        _next: window.location.href,
+        _captcha: 'false',
         Nama_PMVC: meta.nama,
         Kabupaten_Kota: meta.kota,
         Tanggal_Identifikasi: meta.tanggal,
@@ -212,7 +215,6 @@ export default function PspPage() {
         form.appendChild(input);
       });
 
-      // 4. Sisipkan File Excel ke dalam Form
       const fileInput = document.createElement('input');
       fileInput.type = 'file';
       fileInput.name = 'attachment';
@@ -223,7 +225,6 @@ export default function PspPage() {
       
       form.appendChild(fileInput);
 
-      // 5. Kirim Form (Halaman akan berpindah sebentar ke FormSubmit lalu kembali)
       document.body.appendChild(form);
       form.submit();
 
@@ -236,7 +237,8 @@ export default function PspPage() {
 
   return (
     <div ref={topRef} className={`psp-page ${stats.complete ? 'psp-page--complete' : ''}`}>
-      {/* ---------- PAGE HEADER ---------- */}
+      
+      {/* ---------- PAGE HEADER DENGAN DROPDOWN ---------- */}
       <div className="psp-pageHeader">
         <div>
           <p className="psp-kicker">SEKBER PMVBI (Pemuda Buddhayana)</p>
@@ -247,20 +249,65 @@ export default function PspPage() {
         <div className="psp-metaGrid">
           <label className="psp-field">
             <span>Nama PMV/C</span>
-            <input type="text" value={meta.nama}
-              placeholder="cth. PMV Dharma Bakti"
-              onChange={e => handleMetaChange('nama', e.target.value)} />
+            <select 
+              className="psp-select" 
+              value={meta.nama} 
+              onChange={e => handlePmvChange(e.target.value)}
+            >
+              <option value="" disabled>-- Pilih Nama PMV/C --</option>
+              {PMV_DATA.map((p, idx) => (
+                <option key={idx} value={p.nama}>{p.nama}</option>
+              ))}
+            </select>
           </label>
+
           <label className="psp-field">
             <span>Kab / Kota</span>
-            <input type="text" value={meta.kota}
-              placeholder="cth. Jakarta Barat"
-              onChange={e => handleMetaChange('kota', e.target.value)} />
+            <select 
+              className="psp-select" 
+              value={meta.kota} 
+              onChange={e => handleMetaChange('kota', e.target.value)}
+            >
+              <option value="" disabled>-- Pilih Kab / Kota --</option>
+              {KOTA_LIST.map((kota, idx) => (
+                <option key={idx} value={kota}>{kota}</option>
+              ))}
+            </select>
           </label>
+
           <label className="psp-field">
             <span>Tgl. Identifikasi</span>
-            <input type="date" value={meta.tanggal}
-              onChange={e => handleMetaChange('tanggal', e.target.value)} />
+            {/* DatePicker memanggil new Date() di dalamnya → hanya render setelah
+                halaman terbuka di browser (ready = true), bukan saat build */}
+            {!ready ? (
+              <input
+                type="text"
+                className="psp-custom-datepicker"
+                placeholder="Pilih Tanggal"
+                disabled
+                readOnly
+              />
+            ) : (
+            <DatePicker
+              selected={meta.tanggal ? new Date(meta.tanggal) : null}
+              onChange={(date: Date | null) => {
+                // Format ke YYYY-MM-DD agar tetap kompatibel dengan sistem Anda
+                if (date) {
+                  const offset = date.getTimezoneOffset();
+                  const localDate = new Date(date.getTime() - (offset * 60 * 1000));
+                  handleMetaChange('tanggal', localDate.toISOString().split('T')[0]);
+                } else {
+                  handleMetaChange('tanggal', '');
+                }
+              }}
+              dateFormat="dd/MM/yyyy"
+              placeholderText="Pilih Tanggal"
+              className="psp-custom-datepicker"
+              wrapperClassName="psp-datepicker-wrapper"
+              showPopperArrow={false}
+              popperPlacement="bottom-start"
+            />
+            )}
           </label>
         </div>
       </div>
@@ -420,7 +467,7 @@ export default function PspPage() {
         </div>
       )}
 
-      {/* ---------- MODAL REKAP HASIL & TOMBOL AKSI ---------- */}
+      {/* ---------- MODAL REKAP HASIL ---------- */}
       {showResult && (
         <div className="psp-modalOverlay" onClick={() => setShowResult(false)}>
           <div className="psp-modal" onClick={e => e.stopPropagation()}>
@@ -462,7 +509,6 @@ export default function PspPage() {
                 </div>
               </div>
 
-              {/* Notifikasi Status Pengiriman */}
               {sendStatus && (
                 <div style={{
                   marginTop: '16px', padding: '12px', borderRadius: '8px', fontSize: '13px', fontWeight: 'bold',
