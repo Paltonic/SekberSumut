@@ -365,3 +365,24 @@
   .ev-form-grid { grid-template-columns: 1fr; }
   .ev-modal { border-radius: 16px; }
 }
+
+/* ---------- Pemilih jam 24 jam ---------- */
+.ev-time {
+  display: flex; align-items: center; gap: 6px;
+  padding: 4px 6px 4px 4px; border-radius: 10px;
+  background: #0A1222; border: 1px solid rgba(148, 163, 184, .25);
+}
+.ev-time:focus-within { border-color: #FACC15; box-shadow: 0 0 0 3px rgba(250, 204, 21, .15); }
+.ev-field .ev-time select {
+  width: auto; flex: 1; padding: 6px 8px; border: 0; background: transparent;
+  font-size: 16px; font-weight: 700; text-align: center; box-shadow: none;
+  font-variant-numeric: tabular-nums; cursor: pointer;
+}
+.ev-field .ev-time select:focus { box-shadow: none; }
+.ev-field .ev-time select option { background: #0F1A30; }
+.ev-time-sep { font-weight: 800; color: #94A3B8; }
+.ev-time-zone {
+  padding: 4px 8px; border-radius: 6px; font-size: 11.5px; font-weight: 800;
+  background: rgba(250, 204, 21, .14); color: #FACC15; letter-spacing: .5px;
+}
+.ev-field-note { grid-column: 1 / -1; margin: -4px 0 0; font-size: 12px; color: #64748B; }

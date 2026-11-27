@@ -4,8 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { X, Trash2, Save, Globe, Lock } from 'lucide-react';
 import { addDoc, collection, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../../lib/firebase';
-import { Division, EventType, DIVISION_LABELS } from '../../../lib/events';
+import {
+  Division, EventType, DIVISION_LABELS, DEFAULT_TIME, eventStartTime, eventEndTime, formatTimeRange,
+} from '../../../lib/events';
 import RangeDatePicker from './RangeDatePicker';
+import TimePicker24 from './TimePicker24';
 import './events.css';
 
 type Props = {
@@ -19,7 +22,8 @@ type Props = {
 
 type FormState = {
   title: string;
-  time: string;
+  startTime: string;
+  endTime: string;
   location: string;
   description: string;
   division: Division;
@@ -35,7 +39,7 @@ const VISIBILITY_TEXT: Record<Division, string> = {
 };
 
 const emptyForm = (date: string): FormState => ({
-  title: '', time: '', location: '', description: '',
+  title: '', startTime: DEFAULT_TIME, endTime: DEFAULT_TIME, location: '', description: '',
   division: 'all', startDate: date, endDate: date,
 });
 
@@ -51,7 +55,8 @@ export default function EventFormModal({ open, editing, defaultDate, onClose }: 
     if (editing) {
       setForm({
         title: editing.title || '',
-        time: editing.time || '',
+        startTime: eventStartTime(editing),
+        endTime: eventEndTime(editing),
         location: editing.location || '',
         description: editing.description || '',
         division: editing.division || 'all',
@@ -79,14 +84,22 @@ export default function EventFormModal({ open, editing, defaultDate, onClose }: 
     e.preventDefault();
     if (!db) { setErrorMsg('Koneksi database belum siap.'); return; }
     if (!form.startDate) { setErrorMsg('Pilih tanggal acara terlebih dahulu.'); return; }
-    if (!form.title.trim() || !form.time.trim()) { setErrorMsg('Nama acara dan waktu wajib diisi.'); return; }
+    if (!form.title.trim()) { setErrorMsg('Nama acara wajib diisi.'); return; }
 
     const endDate = form.endDate && form.endDate >= form.startDate ? form.endDate : form.startDate;
+    const startTime = form.startTime || DEFAULT_TIME;
+    const endTime = form.endTime || DEFAULT_TIME;
+    if (endDate === form.startDate && endTime < startTime) {
+      setErrorMsg('Jam selesai tidak boleh lebih awal dari jam mulai.');
+      return;
+    }
     const payload = {
       date: form.startDate,
       endDate,
       title: form.title.trim(),
-      time: form.time.trim(),
+      startTime,
+      endTime,
+      time: formatTimeRange(startTime, endTime),
       location: form.location.trim(),
       description: form.description.trim(),
       division: form.division,
@@ -157,14 +170,18 @@ export default function EventFormModal({ open, editing, defaultDate, onClose }: 
                 value={form.title} onChange={(e) => set('title', e.target.value)}
               />
             </label>
-            <label className="ev-field">
-              <span>Waktu *</span>
-              <input
-                type="text" required placeholder="Cth: 10:00 - 12:00 WIB"
-                value={form.time} onChange={(e) => set('time', e.target.value)}
-              />
-            </label>
-            <label className="ev-field">
+            <div className="ev-field">
+              <span>Jam Mulai</span>
+              <TimePicker24 value={form.startTime} onChange={(v) => set('startTime', v)} label="Jam mulai" />
+            </div>
+            <div className="ev-field">
+              <span>Jam Selesai</span>
+              <TimePicker24 value={form.endTime} onChange={(v) => set('endTime', v)} label="Jam selesai" />
+            </div>
+            <p className="ev-field-note full">
+              Format 24 jam (WIB). Jika tidak diubah, jam otomatis 00.00.
+            </p>
+            <label className="ev-field full">
               <span>Lokasi</span>
               <input
                 type="text" placeholder="Cth: Buddhayana Center"

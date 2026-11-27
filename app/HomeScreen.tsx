@@ -9,7 +9,7 @@ import EventCalendar from './components/events/EventCalendar'
 import { useEvents } from './components/events/useEvents'
 import { isPublicEvent } from '../lib/events'
 
-const APP_VERSION = 'v2.1.1'
+const APP_VERSION = 'v2.1.2'
 const APP_CREDIT = '© 2026 FLik FLip. All rights reserved.'
 
 // Pastikan Anda sudah meng-import gambar Anda di sini

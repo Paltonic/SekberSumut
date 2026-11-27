@@ -11,7 +11,10 @@ export type EventType = {
   date: string;          // Tanggal mulai  (YYYY-MM-DD)
   endDate?: string;      // Tanggal selesai (YYYY-MM-DD)
   title: string;
+  /** Teks waktu siap tampil, cth "08.00 – 17.00 WIB" (disimpan juga untuk data lama) */
   time: string;
+  startTime?: string;    // 'HH:MM' 24 jam
+  endTime?: string;      // 'HH:MM' 24 jam
   location: string;
   description?: string;
   division?: Division;
@@ -140,6 +143,54 @@ export function formatRange(startKey: string, endKey?: string): string {
 
 export function sortEvents(list: EventType[]): EventType[] {
   return [...list].sort((a, b) =>
-    a.date === b.date ? (a.time || '').localeCompare(b.time || '') : a.date.localeCompare(b.date),
+    a.date === b.date ? eventStartTime(a).localeCompare(eventStartTime(b)) : a.date.localeCompare(b.date),
   );
+}
+
+// ============================================================
+// JAM (format 24 jam, zona WIB)
+// ============================================================
+export const DEFAULT_TIME = '00:00';
+
+/** Ambil jam-jam 'HH:MM' dari teks lama, cth "10:00 - 12:00 WIB" / "9.30 WIB" */
+export function parseTimes(text?: string): string[] {
+  if (!text) return [];
+  const out: string[] = [];
+  const re = /(\d{1,2})[:.](\d{2})/g;
+  let m: RegExpExecArray | null;
+  while ((m = re.exec(text))) {
+    const h = Number(m[1]); const mi = Number(m[2]);
+    if (h < 24 && mi < 60) out.push(`${String(h).padStart(2, '0')}:${String(mi).padStart(2, '0')}`);
+  }
+  return out;
+}
+
+export function eventStartTime(e: EventType): string {
+  return e.startTime || parseTimes(e.time)[0] || DEFAULT_TIME;
+}
+
+export function eventEndTime(e: EventType): string {
+  if (e.endTime) return e.endTime;
+  const t = parseTimes(e.time);
+  return t[1] || t[0] || DEFAULT_TIME;
+}
+
+/** 'HH:MM' -> 'HH.MM' (gaya penulisan jam Indonesia) */
+export function dotTime(t: string): string {
+  return (t || DEFAULT_TIME).replace(':', '.');
+}
+
+/** "08.00 – 17.00 WIB" atau "08.00 WIB" bila jam mulai = jam selesai */
+export function formatTimeRange(start: string, end: string): string {
+  const s = start || DEFAULT_TIME;
+  const e = end || s;
+  return e === s ? `${dotTime(s)} WIB` : `${dotTime(s)} – ${dotTime(e)} WIB`;
+}
+
+/** Teks jam untuk ditampilkan di kalender */
+export function eventTimeLabel(e: EventType): string {
+  if (e.startTime || e.endTime) return formatTimeRange(eventStartTime(e), eventEndTime(e));
+  const t = parseTimes(e.time);
+  if (t.length) return formatTimeRange(t[0], t[1] || t[0]);
+  return e.time || formatTimeRange(DEFAULT_TIME, DEFAULT_TIME);
 }

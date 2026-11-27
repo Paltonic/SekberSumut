@@ -8,7 +8,7 @@ import {
 import {
   Division, EventType, DIVISION_COLORS, DIVISION_LABELS, MONTHS_ID, MONTHS_SHORT_ID, WEEKDAYS_ID,
   addDays, buildMonthGrid, daysBetween, eventEnd, formatRange, formatWeekdayLong, fromKey,
-  isEventOnDate, isMultiDay, sortEvents, toKey,
+  isEventOnDate, isMultiDay, sortEvents, toKey, eventTimeLabel,
 } from '../../../lib/events';
 import './events.css';
 
@@ -148,7 +148,7 @@ export default function EventCalendar({
           <h4>{e.title}</h4>
           <div className="ev-card-meta">
             <span><CalendarRange size={13} /> {formatRange(e.date, e.endDate)}</span>
-            {e.time && <span><Clock size={13} /> {e.time}</span>}
+            <span><Clock size={13} /> {eventTimeLabel(e)}</span>
             {e.location && <span><MapPin size={13} /> {e.location}</span>}
           </div>
         </div>
@@ -403,7 +403,7 @@ export default function EventCalendar({
                     {isMultiDay(detail) && <small>{daysBetween(detail.date, eventEnd(detail)) + 1} hari</small>}
                   </div>
                 </li>
-                {detail.time && <li><Clock size={16} /><div><b>{detail.time}</b></div></li>}
+                <li><Clock size={16} /><div><b>{eventTimeLabel(detail)}</b></div></li>
                 {detail.location && <li><MapPin size={16} /><div><b>{detail.location}</b></div></li>}
               </ul>
               {detail.description && <p className="ev-detail-desc">{detail.description}</p>}
